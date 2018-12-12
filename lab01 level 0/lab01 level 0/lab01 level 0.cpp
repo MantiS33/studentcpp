@@ -94,8 +94,7 @@ int main()
 	number();
 	cout << "Hello, my dear. What are the numbers?" << endl;
 	Calculator();
-	while (!(cin >> ChooseR) || ChooseR == 'y')
-	{
+	cin >> ChooseR;
 		switch (ChooseR)
 		{
 		case 'y':
@@ -108,9 +107,6 @@ int main()
 			break;
 		}
 		}
-		cin.clear();
-		cin.get();
-	}
 	system("pause");
 	return 0;
 }
