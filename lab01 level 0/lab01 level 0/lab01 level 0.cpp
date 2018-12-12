@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 #include<iostream>
-#include<cstdlib>
 using namespace std;
 
 void number()
