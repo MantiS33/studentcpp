@@ -30,25 +30,17 @@ void add_last(int value)
 	last = tmp;
 }
 
-void print(int& num)
+void m_value(double& num)
 {
+	int count = 0;
 	node*tmp = first;
 	while (tmp != NULL)
 	{
-		if (tmp->value == num)
-		{
-			ofstream out("d://output.txt");
-			out << "this number is in the file." << endl;
-			out.close();
-		}
-		else
-		{
-			ofstream out("d://output.txt");
-			out << "this number is not in the file.";
-			out.close();
-		}
+		num = num + tmp->value;
+		count += 1;
 		tmp = tmp->next;
 	}
+	num = num / count;
 }
 
 void remove()
@@ -64,8 +56,7 @@ void remove()
 
 int main()
 {
-	int num;
-	cin >> num;
+	double num=0;
 	ifstream in("d://input.txt");
 	if (!in)
 	{
@@ -78,8 +69,10 @@ int main()
 		add_last(temp);
 	}
 	in.close();
-	print(num);
-	cout << endl;
+	m_value(num);
+	ofstream out("d://output.txt");
+	out <<"Среденее арифметическое суммы чисел = " <<num << endl;
+	out.close();
 	remove();
 	system("pause");
 	return 0;
