@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+/*Часть функций закомментирована для отладки и для отката на рабочий вариант, в случае обнаружения критических ошибок*/
+
 struct aeroflot
 {
 	char* point_of_arrival;
@@ -10,7 +12,6 @@ struct aeroflot
 	aeroflot* next;
 	aeroflot* prev;
 };
-
 
 class list
 {
@@ -31,7 +32,7 @@ public:
 		}
 	}
 	void info();
-	void sort();
+	//void sort();
 	void add();
 };
 
@@ -50,18 +51,19 @@ void list::info()
 			test = true;
 			cout << "flightnumber: " << temp->flight_number << endl;
 			cout << "airplane: " << temp->airplane << endl;
+			cout << endl;
 		}
 		if (test == false)
 		{
-			cout << "No flights departing. " << endl;
+			cout << "No flights departing. " << endl << endl;
 		}
 		temp = temp->next;
 	}
-	cout << endl;
 }
 
 void list::add()
 {
+	aeroflot* Temp = head;
 	char* buffer = new char[128];
 	aeroflot* temp = new aeroflot;
 	temp->next = NULL;
@@ -77,9 +79,41 @@ void list::add()
 	memcpy(temp->airplane, buffer, strlen(buffer) + 1);
 	if (head != NULL)
 	{
-		temp->prev = tail;
-		tail->next = temp;
-		tail = temp;
+		if (Temp->next != NULL)
+		{
+			while (Temp != tail)
+			{
+				if ((temp->flight_number > Temp->flight_number) && (temp->flight_number < Temp->next->flight_number))
+				{
+					temp->next = Temp->next;
+					temp->prev = Temp;
+					Temp->next->prev = temp;
+					Temp->next = temp;
+				}
+				if (temp->flight_number < head->flight_number)
+				{
+					temp->next = head;
+					head->prev = temp;
+					temp->prev = NULL;
+					head = temp;
+					break;
+				}
+				if (temp->flight_number > tail->flight_number)
+				{
+					temp->prev = tail;
+					tail->next = temp;
+					tail = temp;
+					break;
+				}
+				Temp = Temp->next;
+			}
+		}
+		else
+		{
+			temp->prev = tail;
+			tail->next = temp;
+			tail = temp;
+		}
 	}
 	else
 	{
@@ -87,10 +121,10 @@ void list::add()
 		head = tail = temp;
 	}
 	delete[] buffer;
-	sort();
+	//sort();
 }
 
-void list::sort()
+/*void list::sort()
 {
 	aeroflot* cur = head;
 	while (cur->next)
@@ -109,9 +143,9 @@ void list::sort()
 			cur = cur->next;
 		}
 	}
-}
+}*/
 
-/*void list::show()
+/*void list::info()
 {
 	aeroflot* temp = head;
 	while (temp != NULL)
@@ -172,7 +206,6 @@ int main()
 	{
 		fly.info();
 	}
-
 	system("pause");
 	return 0;
 }
