@@ -61,6 +61,7 @@ int main()
 	if (!in)
 	{
 		cout << "error openning the file" << endl;
+		return 0;
 	}
 	while (!in.eof())
 	{
