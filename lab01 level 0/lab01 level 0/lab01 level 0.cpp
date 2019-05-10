@@ -32,6 +32,7 @@ void Text()
 	int Date, Month, Year, temp;
 	cout << "What is your name? ";
 	cin >> name;
+	cout << name;
 	cout << "\nWhen were you born date? ";
 	cin >> Date;
 	cout << "\nNow month of your birthday ";
