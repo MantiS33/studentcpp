@@ -20,8 +20,10 @@ public:
 	list() :head(NULL), tail(NULL) {};
 	~list()
 	{
+		aeroflot* temp;
 		while (head)
 		{
+			temp=head;
 			tail = head->next;
 			delete[] temp->point_of_arrival;
 			delete[] temp->airplane;
