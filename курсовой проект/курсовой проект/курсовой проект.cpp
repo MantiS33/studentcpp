@@ -10,8 +10,8 @@ class fileinfo
 private:
 	int day, month, year, hour, minute;
 public:
-	fileinfo():day(0),month(0),year(0),hour(0),minute(0) {}
-	fileinfo(int Day,int Month,int Year,int Hour,int Minute):day(Day),month(Month),year(Year),hour(Hour),minute(Minute) {}	
+	fileinfo() :day(0), month(0), year(0), hour(0), minute(0) {}
+	fileinfo(int Day, int Month, int Year, int Hour, int Minute) :day(Day), month(Month), year(Year), hour(Hour), minute(Minute) {}
 	bool operator<=(const fileinfo& x)
 	{
 		return (this->day <= x.day) && (this->month <= x.month) && (this->year <= x.year) && (this->hour <= x.hour) && (this->minute <= x.minute);
@@ -20,7 +20,7 @@ public:
 	{
 		return (!(this->day == y.day)) && (!(this->month == y.month)) && (!(this->year == y.year)) && (!(this->hour == y.hour)) && (!(this->minute == y.minute));
 	}
-	friend ostream& operator<<(ostream& out,const fileinfo& date)
+	friend ostream & operator<<(ostream & out, const fileinfo & date)
 	{
 		out << date.day << "." << date.month << "." << date.year << "  " << date.hour << ":" << date.minute;
 		return out;
@@ -35,7 +35,7 @@ private:
 	{
 		Tkey data;
 		Tvalue data1;
-		int count=0;
+		int count = 0;
 		element* next;
 	};
 	element* head, * tail, * temp;
@@ -92,7 +92,7 @@ public:
 		elem.temp = elem.head;
 		while (elem.temp != NULL)
 		{
-			out << elem.temp->data << " : " << elem.temp->data1 << "  " <<elem.temp->count << "\n";
+			out << elem.temp->data << " : " << elem.temp->data1 << "  " << elem.temp->count << "\n";
 			elem.temp = elem.temp->next;
 		}
 		return out;
@@ -180,7 +180,7 @@ public:
 	}
 };
 
-char Interpreter(string &str)
+char Interpreter(string& str)
 {
 	if (str == "menu")
 	{
@@ -229,13 +229,13 @@ int main()
 		{
 		case '1':
 		{
-			cout <<endl<< "menu: show menu" << endl 
+			cout << endl << "menu: show menu" << endl
 				<< "dir: show all file" << endl
-				<< "create: create a file" << endl 
+				<< "create: create a file" << endl
 				<< "createf: create a folder " << endl
-				<< "show: show certain file"<<endl
+				<< "show: show certain file" << endl
 				<< "delete: delete certain file" << endl
-				<< "end: close the programm" << endl<<endl;
+				<< "end: close the programm" << endl << endl;
 			break;
 		}
 		case '2':
@@ -275,7 +275,7 @@ int main()
 			break;
 		case 'e':
 		{
-			cout <<endl<< "error! try again" << endl<<endl;
+			cout << endl << "error! try again" << endl << endl;
 			break;
 		}
 		case '0':

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="курс тест4.cpp">
+    <ClCompile Include="курсовой проект.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

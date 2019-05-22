@@ -7,8 +7,8 @@ class vector
 private:
 	int x, y;
 public:
-	vector(): x(0),y(0) {}
-	vector(int X,int Y): x(X),y(Y) {}
+	vector() : x(0), y(0) {}
+	vector(int X, int Y) : x(X), y(Y) {}
 	friend ostream& operator<<(ostream& out, vector& v)
 	{
 		out << "(" << v.x << ";" << v.y << ")";
@@ -64,7 +64,7 @@ private:
 	element* head, * tail;
 	element* temp;
 public:
-	list():head(NULL),tail(NULL),temp(NULL) {}
+	list() :head(NULL), tail(NULL), temp(NULL) {}
 	~list()
 	{
 		while (head)
@@ -143,11 +143,11 @@ int main()
 	list<test> a;
 	list<int> b;
 	list<vector> c;
-	char choise,choisemain;
-	cout << "1)пользовательский тип данных" << endl 
-		<< "2)тип данных int" << endl 
-		<< "3)тип вектор" << endl 
-		<< "0)закрыть" << endl 
+	char choise, choisemain;
+	cout << "1)пользовательский тип данных" << endl
+		<< "2)тип данных int" << endl
+		<< "3)тип вектор" << endl
+		<< "0)закрыть" << endl
 		<< ">";
 	cin >> choisemain;
 	while (choisemain)
@@ -158,7 +158,7 @@ int main()
 		{
 			cout << "1)добавить элемент" << endl << "2)вывести информацию" << endl << "0)закрыть" << endl << ">";
 			cin >> choise;
-			while (choise!='0')
+			while (choise != '0')
 			{
 				switch (choise)
 				{
@@ -183,18 +183,18 @@ int main()
 		{
 			cout << "1)добавить элемент" << endl << "2)вывести информацию" << endl << "0)закрыть" << endl << ">";
 			cin >> choise;
-			while (choise!='0')
+			while (choise != '0')
 			{
 				switch (choise)
 				{
 				case '1':
 				{
-					cin>>b;
+					cin >> b;
 					break;
 				}
 				case '2':
 				{
-					cout<<b;
+					cout << b;
 					break;
 				}
 				}

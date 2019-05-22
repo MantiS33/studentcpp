@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{0DBA75CD-F1DD-4DA9-89A8-C87D7388AE08}</ProjectGuid>
+    <ProjectGuid>{03D8C436-772D-464C-B515-F0CEAA682D02}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>курстест4</RootNamespace>
+    <RootNamespace>курсовойпроект</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="курс тест4.cpp" />
+    <ClCompile Include="курсовой проект.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
