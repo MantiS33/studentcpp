@@ -23,7 +23,7 @@ public:
 		aeroflot* temp;
 		while (head)
 		{
-			temp = head;
+			temp=head;
 			tail = head->next;
 			delete[] temp->point_of_arrival;
 			delete[] temp->airplane;
