@@ -9,60 +9,36 @@ private:
 public:
 	vector() : x(0), y(0) {}
 	vector(int X, int Y) : x(X), y(Y) {}
-	friend ostream& operator<<(ostream& out, vector& v)
+	friend ostream& operator<<(ostream& out, const vector& v)
 	{
 		out << "(" << v.x << ";" << v.y << ")";
 		return out;
 	}
 };
 
-class test
-{
-private:
-	int num;
-	string str;
-public:
-	test() :num(0), str("nope") {}
-	//test(int num, string str) :num(num), str(str) {}
-	friend ostream& operator<<(ostream& out, const test& elem)
-	{
-		out << elem.num << " : " << elem.str;
-		return out;
-	}
-	friend istream& operator>>(istream& in, test& elem)
-	{
-		in >> elem.num;
-		elem.add();
-		return in;
-	}
-	void add()
-	{
-		char* buff = new char[256];
-		cin.getline(buff, 256);
-		str = buff;
-		delete[] buff;
-	}
-	/*friend istream& operator>>(istream& in, test& elem)
-	{
-		in >> elem.num;
-		in >> elem.str;
-		return in;
-	}*/
-};
-
-
-
-template <class T>
+template<class Tkey, class Tvalue>
 class list
 {
 private:
 	struct element
 	{
-		T data;
+		Tkey data;
+		Tvalue data1;
 		element* next;
 	};
-	element* head, * tail;
-	element* temp;
+	element* head, * tail, * temp;
+	void add()
+	{
+		if (head != NULL)
+		{
+			tail->next = temp;
+			tail = temp;
+		}
+		else
+		{
+			head = tail = temp;
+		}
+	}
 public:
 	list() :head(NULL), tail(NULL), temp(NULL) {}
 	~list()
@@ -74,89 +50,130 @@ public:
 			head = tail;
 		}
 	}
-
-	friend ostream& operator <<(ostream& out, list& elem)
+	bool unique()
+	{
+		element* Temp = head;
+		while (Temp != NULL)
+		{
+			if (Temp->data == temp->data)
+				return false;
+			Temp = Temp->next;
+		}
+		return true;
+	}
+	Tvalue& operator[](Tkey key)
+	{
+		this->temp = this->head;
+		while (this->temp != NULL)
+		{
+			if (this->temp->data == key)
+			{
+				return this->temp->data1;
+			}
+			this->temp = this->temp->next;
+		}
+		throw;
+	}
+	friend ostream& operator<<(ostream & out, list & elem)
 	{
 		elem.temp = elem.head;
 		while (elem.temp != NULL)
 		{
-			out << elem.temp->data << "\n";
+			out << elem.temp->data << " : " << elem.temp->data1 << "\n";
 			elem.temp = elem.temp->next;
 		}
 		return out;
 	}
-	friend istream& operator>>(istream& in, list& elem)
+	friend istream& operator>>(istream & in, list & elem)
 	{
 		elem.temp = new element;
 		elem.temp->next = NULL;
 		in >> elem.temp->data;
-		if (elem.head != NULL)
+		while (elem.unique() == false)
 		{
-			elem.tail->next = elem.temp;
-			elem.tail = elem.temp;
+			in.clear();
+			cout << "uncorrectable key!" << endl << "input new: ";
+			in >> elem.temp->data;
 		}
-		else
-		{
-			elem.head = elem.tail = elem.temp;
-		}
+		in >> elem.temp->data1;
+		elem.add();
 		return in;
 	}
-	void add(T elem);
-	/*void output();
-	T& Get()
+	void Delete(Tkey num)
 	{
-		return Temp->data;
-	}*/
+		temp = head;
+		while (temp != NULL)
+		{
+			if (temp->data == num)
+			{
+				if (temp == head)
+				{
+					head = head->next;
+					delete temp;
+					break;
+				}
+				if (temp == tail)
+				{
+					temp = head;
+					while (temp->next != tail)
+					{
+						temp = temp->next;
+					}
+					delete tail;
+					temp->next = NULL;
+					tail = temp;
+					break;
+				}
+				if (temp != head && temp != tail)
+				{
+					temp = head;
+					while (temp->next->data != num)
+					{
+						temp = temp->next;
+					}
+					element* Temp = temp->next;
+					temp->next = temp->next->next;
+					delete Temp;
+					break;
+				}
+			}
+			temp = temp->next;
+		}
+	}
+	void add(Tkey key, Tvalue item)
+	{
+		temp = new element;
+		temp->next = NULL;
+		temp->data = key;
+		while (unique() == false)
+		{
+			cout << "uncorrectable key!" << endl << "input new: ";
+			cin >> temp->data;
+		}
+		temp->data1 = item;
+		add();
+	}
 };
-
-template <class T>
-void list<T>::add(T elem)
-{
-	temp = new element;
-	temp->data = elem;
-	temp->next = NULL;
-	if (head != NULL)
-	{
-		tail->next = temp;
-		tail = temp;
-	}
-	else
-	{
-		head = tail = temp;
-	}
-}
-
-/*template<class T>
-void list<T>::output()
-{
-	Temp = head;
-	while (Temp != NULL)
-	{
-		cout << Get() << endl;
-		Temp = Temp->next;
-	}
-}*/
 
 int main()
 {
-	setlocale(LC_ALL, "rus");
-	list<test> a;
-	list<int> b;
-	list<vector> c;
-	char choise, choisemain;
-	cout << "1)пользовательский тип данных" << endl
-		<< "2)тип данных int" << endl
-		<< "3)тип вектор" << endl
-		<< "0)закрыть" << endl
-		<< ">";
-	cin >> choisemain;
-	while (choisemain)
+	list<int, char> a;
+	list<string, vector> b;
+	char choise;
+	cout << "1)int and char" << endl << "2)vector" << endl << "0)close" << endl << ">";
+	cin >> choise;
+	while (choise)
 	{
-		switch (choisemain)
+		switch (choise)
 		{
-		case '1':
+		case'1':
 		{
-			cout << "1)добавить элемент" << endl << "2)вывести информацию" << endl << "0)закрыть" << endl << ">";
+			cout << "1)add element " << endl
+				<< "2)show all" << endl
+				<< "3)show specific item" << endl
+				<< "4)delete item" << endl
+				<< "0)close" << endl
+				<< ">";
 			cin >> choise;
 			while (choise != '0')
 			{
@@ -172,6 +189,22 @@ int main()
 					cout << a;
 					break;
 				}
+				case'3':
+				{
+					int i;
+					cout << "input key: ";
+					cin >> i;
+					cout << i << " : " << a[i] << endl;
+					break;
+				}
+				case '4':
+				{
+					int num;
+					cout << "input key: ";
+					cin >> num;
+					a.Delete(num);
+					break;
+				}
 				}
 				cout << ">";
 				cin >> choise;
@@ -181,7 +214,12 @@ int main()
 		}
 		case '2':
 		{
-			cout << "1)добавить элемент" << endl << "2)вывести информацию" << endl << "0)закрыть" << endl << ">";
+			cout << "1)add element " << endl
+				<< "2)show all" << endl
+				<< "3)show specific item" << endl
+				<< "4)delete item" << endl
+				<< "0)close" << endl
+				<< ">";
 			cin >> choise;
 			while (choise != '0')
 			{
@@ -189,12 +227,33 @@ int main()
 				{
 				case '1':
 				{
-					cin >> b;
+					string str;
+					cin >> str;
+					int num, num1;
+					cin >> num;
+					cin >> num1;
+					b.add(str, vector(num, num1));
 					break;
 				}
 				case '2':
 				{
 					cout << b;
+					break;
+				}
+				case'3':
+				{
+					string i;
+					cout << "input key: ";
+					cin >> i;
+					cout << i << " : " << b[i] << endl;
+					break;
+				}
+				case '4':
+				{
+					string i;
+					cout << "input key: ";
+					cin >> i;
+					b.Delete(i);
 					break;
 				}
 				}
@@ -204,41 +263,11 @@ int main()
 			b.~list();
 			break;
 		}
-		case '3':
-		{
-			cout << "1)добавить элемент" << endl << "2)вывести информацию" << endl << "0)закрыть" << endl << ">";
-			cin >> choise;
-			while (choise != '0')
-			{
-				switch (choise)
-				{
-				case '1':
-				{
-					int num, num1;
-					cin >> num;
-					cin >> num1;
-					c.add(vector(num, num1));
-					break;
-				}
-				case '2':
-				{
-					cout << c;
-					break;
-				}
-				}
-				cout << ">";
-				cin >> choise;
-			}
-			c.~list();
-			break;
-		}
 		case '0':
-		{
 			return 0;
 		}
-		}
 		cout << ">";
-		cin >> choisemain;
+		cin >> choise;
 	}
 	return 0;
 }
