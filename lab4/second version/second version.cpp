@@ -1,104 +1,53 @@
 ﻿#include <iostream>
-#include <string>
 using namespace std;
-
-/*Часть функций закомментирована для отладки и для отката на рабочий вариант, в случае обнаружения критических ошибок*/
 
 struct aeroflot
 {
 	char* point_of_arrival;
 	int flight_number;
 	char* airplane;
-	aeroflot* next;
-	aeroflot* prev;
 };
 
-class list
+struct list
 {
-	aeroflot* head, * tail;
-public:
-	list() :head(NULL), tail(NULL) {};
-	~list()
-	{
-		aeroflot* temp;
-		while (head)
-		{
-			temp=head;
-			tail = head->next;
-			delete[] temp->point_of_arrival;
-			delete[] temp->airplane;
-			delete head;
-			head = tail;
-		}
-	}
-	void info();
-	//void sort();
-	void add();
+	aeroflot data;
+	list* next, * prev;
 };
 
-void list::info()
-{
-	char buffer[128];
-	bool test = false;
-	cout << "enter point of arrival: ";
-	cin >> buffer;
-	cout << endl;
-	aeroflot* temp = head;
-	while (temp != NULL)
-	{
-		if (!strcmp(buffer, temp->point_of_arrival))
-		{
-			test = true;
-			cout << "flightnumber: " << temp->flight_number << endl;
-			cout << "airplane: " << temp->airplane << endl;
-			cout << endl;
-		}
-		if (test == false)
-		{
-			cout << "No flights departing. " << endl << endl;
-		}
-		temp = temp->next;
-	}
-}
+list* head = NULL;
+list* tail = NULL;
 
-void list::add()
+void add(aeroflot elem)
 {
-	aeroflot* Temp = head;
-	char* buffer = new char[128];
-	aeroflot* temp = new aeroflot;
+	list* Temp = head;
+	list* temp = new list;
+	temp->data = elem;
 	temp->next = NULL;
-	cout << "enter destination name: ";
-	cin >> buffer;
-	temp->point_of_arrival = new char[strlen(buffer) + 1];
-	memcpy(temp->point_of_arrival, buffer, strlen(buffer) + 1);
-	cout << "enter flight number: ";
-	cin >> temp->flight_number;
-	cout << "enter airplane type: ";
-	cin >> buffer;
-	temp->airplane = new char[strlen(buffer) + 1];
-	memcpy(temp->airplane, buffer, strlen(buffer) + 1);
+	temp->prev = NULL;
 	if (head != NULL)
 	{
+		/*temp->next = head;
+		head->prev = temp;
+		head = temp;*/
 		if (Temp->next != NULL)
 		{
-			while (Temp != tail)
+			while (Temp != NULL)
 			{
-				if ((temp->flight_number > Temp->flight_number) && (temp->flight_number < Temp->next->flight_number))
+				if ((temp->data.flight_number > Temp->data.flight_number) && (temp->data.flight_number < Temp->next->data.flight_number))
 				{
 					temp->next = Temp->next;
 					temp->prev = Temp;
 					Temp->next->prev = temp;
 					Temp->next = temp;
 				}
-				if (temp->flight_number < head->flight_number)
+				if (temp->data.flight_number < head->data.flight_number)
 				{
 					temp->next = head;
 					head->prev = temp;
-					temp->prev = NULL;
 					head = temp;
 					break;
 				}
-				if (temp->flight_number > tail->flight_number)
+				if (temp->data.flight_number > tail->data.flight_number)
 				{
 					temp->prev = tail;
 					tail->next = temp;
@@ -110,102 +59,113 @@ void list::add()
 		}
 		else
 		{
-			temp->prev = tail;
-			tail->next = temp;
-			tail = temp;
+			if (temp->data.flight_number < head->data.flight_number)
+			{
+				temp->next = head;
+				head->prev = temp;
+				head = temp;
+			}
+			if (temp->data.flight_number > tail->data.flight_number)
+			{
+				temp->prev = tail;
+				tail->next = temp;
+				tail = temp;
+			}
 		}
 	}
 	else
 	{
-		temp->prev = NULL;
 		head = tail = temp;
 	}
-	delete[] buffer;
-	//sort();
 }
 
-/*void list::sort()
+void show()
 {
-	aeroflot* cur = head;
-	while (cur->next)
-	{
-		if ((cur->flight_number) > (cur->next->flight_number))
-		{
-
-			int temp = cur->next->flight_number;
-			cur->next->flight_number = cur->flight_number;
-			cur->flight_number = temp;
-			cur = cur->next;
-			sort();
-		}
-		else
-		{
-			cur = cur->next;
-		}
-	}
-}*/
-
-/*void list::info()
-{
-	aeroflot* temp = head;
+	list* temp = head;
 	while (temp != NULL)
 	{
-		cout << "point of arrival: " << temp->point_of_arrival << endl;
-		cout << "flightnumber: " << temp->flight_number << endl;
-		cout << "airplane: " << temp->airplane << endl;
+		cout << temp->data.point_of_arrival << endl << temp->data.flight_number << endl << temp->data.airplane << endl;
 		temp = temp->next;
 	}
-	cout << endl;
-}*/
+}
 
-/*void list::add()
+void show(char buffer[], int n)
 {
-	char* buffer = new char[128];
-	aeroflot* temp = new aeroflot;
-	temp->next = NULL;
-	cout << "enter destination name: ";
-	cin >> buffer;
-	temp->point_of_arrival = new char[strlen(buffer) + 1];
-	memcpy(temp->point_of_arrival, buffer, strlen(buffer) + 1);
-	cout << "enter flight number: ";
-	cin >> temp->flight_number;
-	cout << "enter airplane type: ";
-	cin >> buffer;
-	temp->airplane = new char[strlen(buffer) + 1];
-	memcpy(temp->airplane, buffer, strlen(buffer) + 1);
-	if (head != NULL)
+	list* temp = head;
+	while (temp != NULL)
 	{
-		temp->prev = tail;
-		tail->next = temp;
-		tail = temp;
+		if (!strcmp(buffer, temp->data.point_of_arrival))
+		{
+			cout << "flightnumber: " << temp->data.flight_number << endl;
+			cout << "airplane: " << temp->data.airplane << endl;
+			cout << endl;
+		}
+		temp = temp->next;
 	}
-	else
-	{
-		temp->prev = NULL;
-		head = tail = temp;
-	}
+}
 
-	delete[] buffer;
-}*/
+void clear()
+{
+	while (head != NULL)
+	{
+		delete[] head->data.point_of_arrival;
+		delete[] head->data.airplane;
+		list* temp = head;
+		head = head->next;
+		delete temp;
+	}
+}
 
 int main()
 {
-	list fly;
-	char choose = 'y';
-	while (choose == 'y')
+	setlocale(LC_ALL, "rus");
+	char choise;
+	cout << "do you wanna enter the fly information? [y/n] ";
+	cin >> choise;
+	if (choise == 'y')
 	{
-
-		fly.add();
-		cout << endl << "do you wanna continue? ";
-		cin >> choose;
+		while (choise == 'y')
+		{
+			cout << endl;
+			aeroflot elem;
+			char* buff = new char[256];
+			cout << "enter destination name: ";
+			cin >> buff;
+			elem.point_of_arrival = new char[strlen(buff) + 1];
+			memcpy(elem.point_of_arrival, buff, strlen(buff) + 1);
+			cout << "enter flight number: ";
+			cin >> elem.flight_number;
+			cout << "enter airplane type: ";
+			cin >> buff;
+			elem.airplane = new char[strlen(buff) + 1];
+			memcpy(elem.airplane, buff, strlen(buff) + 1);
+			add(elem);
+			cout << endl;
+			cout << "do you wanna continue? [y/n] ";
+			cin >> choise;
+		}
+	}
+	else
+	{
+		if (head == NULL)
+		{
+			clear();
+			return 0;
+		}
+	}
+	cout << "do you wanna know a fly information? [y/n] ";
+	cin >> choise;
+	cout << endl;
+	while (choise == 'y')
+	{
+		char* buff = new char[256];
+		cout << "enter distanation name: ";
+		cin >> buff;
+		show(buff, strlen(buff) + 1);
+		cout << "do you wanna know a fly information? [y/n] ";
+		cin >> choise;
 		cout << endl;
 	}
-	cout << "Do you wanna know flight information? ";
-	cin >> choose;
-	if (choose == 'y')
-	{
-		fly.info();
-	}
-	system("pause");
+	clear();
 	return 0;
 }
