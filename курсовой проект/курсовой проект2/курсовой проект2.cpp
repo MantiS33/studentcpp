@@ -27,16 +27,16 @@ private:
 		element* next;
 	};
 	element* head, * tail, * temp;
-	void add()//функция добавления элементов в список, вынесена специально, чтобы убрать повторяемость кода
+	void add(element* elem)//функция добавления элементов в список, вынесена специально, чтобы убрать повторяемость кода
 	{
 		if (head != NULL)
 		{
-			tail->next = temp;
-			tail = temp;
+			tail->next = elem;
+			tail = elem;
 		}
 		else
 		{
-			head = tail = temp;
+			head = tail = elem;
 		}
 	}
 public:
@@ -50,12 +50,12 @@ public:
 			head = tail;
 		}
 	}
-	bool unique()//функция, проверяющая ключ на уникальность 
+	bool isUnique(Tkey& elem)//функция, проверяющая ключ на уникальность 
 	{
 		element* Temp = head;
 		while (Temp != NULL)
 		{
-			if (Temp->data == temp->data)
+			if (Temp->data == elem)
 				return false;
 			Temp = Temp->next;
 		}
@@ -89,17 +89,17 @@ public:
 		elem.temp = new element;
 		elem.temp->next = NULL;
 		in >> elem.temp->data;
-		while (elem.unique() == false)
+		while (elem.isUnique(elem.temp->data) == false)
 		{
 			in.clear();
 			cout << "uncorrectable key!" << endl << "input new: ";
 			in >> elem.temp->data;
 		}
 		in >> elem.temp->data1;
-		elem.add();
+		elem.add(elem.temp);
 		return in;
 	}
-	void Delete(Tkey num)//функция для удаления элемента по ключу
+	void deletting(Tkey num)//функция для удаления элемента по ключу
 	{
 		temp = head;
 		while (temp != NULL)
@@ -145,13 +145,13 @@ public:
 		temp = new element;
 		temp->next = NULL;
 		temp->data = key;
-		while (unique() == false)
+		while (isUnique(temp->data) == false)
 		{
 			cout << "uncorrectable key!" << endl << "input new: ";
 			cin >> temp->data;
 		}
 		temp->data1 = item;
-		add();
+		add(temp);
 	}
 };
 
@@ -202,7 +202,7 @@ int main()
 					int num;
 					cout << "input key: ";
 					cin >> num;
-					a.Delete(num);
+					a.deletting(num);
 					break;
 				}
 				}
@@ -253,7 +253,7 @@ int main()
 					string i;
 					cout << "input key: ";
 					cin >> i;
-					b.Delete(i);
+					b.deletting(i);
 					break;
 				}
 				}
