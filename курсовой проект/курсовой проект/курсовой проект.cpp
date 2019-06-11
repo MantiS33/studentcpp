@@ -1,33 +1,42 @@
 ﻿#include <iostream>
-#include <fstream>
 #include <string>
-#include <iomanip>
 #include <Windows.h>
 using namespace std;
 
-class fileinfo
+class fileinfo//специальный класс для получения времени
 {
 private:
-	int day, month, year, hour, minute;
+	unsigned int day, month, year, hour, minute;
+	//unsigned int count;
 public:
-	fileinfo() :day(0), month(0), year(0), hour(0), minute(0) {}
+	fileinfo()
+	{
+		//this->count = 0;
+		SYSTEMTIME st;
+		GetLocalTime(&st);
+		this->day = st.wDay;
+		this->month = st.wMonth;
+		this->year = st.wYear;
+		this->hour = st.wHour;
+		this->minute = st.wMinute;
+	}
 	fileinfo(int Day, int Month, int Year, int Hour, int Minute) :day(Day), month(Month), year(Year), hour(Hour), minute(Minute) {}
 	bool operator<=(const fileinfo& x)
 	{
 		return (this->day <= x.day) && (this->month <= x.month) && (this->year <= x.year) && (this->hour <= x.hour) && (this->minute <= x.minute);
 	}
-	bool operator !=(const fileinfo & y)
+	bool operator !=(const fileinfo& y)
 	{
 		return (!(this->day == y.day)) && (!(this->month == y.month)) && (!(this->year == y.year)) && (!(this->hour == y.hour)) && (!(this->minute == y.minute));
 	}
-	friend ostream & operator<<(ostream & out, const fileinfo & date)
+	friend ostream& operator<<(ostream& out, const fileinfo& date)
 	{
 		out << date.day << "." << date.month << "." << date.year << "  " << date.hour << ":" << date.minute;
 		return out;
 	}
 };
 
-template<class Tkey, class Tvalue>
+template<class Tkey, class Tvalue>//основная шаблонная коллекция
 class list
 {
 private:
@@ -35,21 +44,32 @@ private:
 	{
 		Tkey data;
 		Tvalue data1;
-		int count = 0;
 		element* next;
 	};
 	element* head, * tail, * temp;
-	void add()
+protected:
+	void add(element* elem)
 	{
 		if (head != NULL)
 		{
-			tail->next = temp;
-			tail = temp;
+			tail->next = elem;
+			tail = elem;
 		}
 		else
 		{
-			head = tail = temp;
+			head = tail = elem;
 		}
+	}
+	bool isUnique(Tkey& elem)
+	{
+		element* Temp = head;
+		while (Temp != NULL)
+		{
+			if (Temp->data == elem)
+				return false;
+			Temp = Temp->next;
+		}
+		return true;
 	}
 public:
 	list() :head(NULL), tail(NULL), temp(NULL) {}
@@ -62,17 +82,6 @@ public:
 			head = tail;
 		}
 	}
-	bool unique()
-	{
-		element* Temp = head;
-		while (Temp != NULL)
-		{
-			if (Temp->data == temp->data)
-				return false;
-			Temp = Temp->next;
-		}
-		return true;
-	}
 	Tvalue& operator[](Tkey key)
 	{
 		this->temp = this->head;
@@ -80,39 +89,38 @@ public:
 		{
 			if (this->temp->data == key)
 			{
-				this->temp->count += 1;
 				return this->temp->data1;
 			}
 			this->temp = this->temp->next;
 		}
 		throw;
 	}
-	friend ostream& operator<<(ostream & out, list & elem)
+	friend ostream& operator<<(ostream& out, list& elem)
 	{
 		elem.temp = elem.head;
 		while (elem.temp != NULL)
 		{
-			out << elem.temp->data << " : " << elem.temp->data1 << "  " << elem.temp->count << "\n";
+			out << elem.temp->data << " : " << elem.temp->data1 << "\n";
 			elem.temp = elem.temp->next;
 		}
 		return out;
 	}
-	friend istream& operator>>(istream & in, list & elem)
+	friend istream& operator>>(istream& in, list& elem)
 	{
 		elem.temp = new element;
 		elem.temp->next = NULL;
 		in >> elem.temp->data;
-		while (elem.unique() == false)
+		while (elem.isUnique(elem.temp->data) == false)
 		{
 			in.clear();
 			cout << "uncorrectable key!" << endl << "input new: ";
 			in >> elem.temp->data;
 		}
 		in >> elem.temp->data1;
-		elem.add();
+		elem.add(elem.temp);
 		return in;
 	}
-	void Delete(Tvalue num)
+	void deletting(Tvalue num)
 	{
 		bool test = false;
 		temp = head;
@@ -158,7 +166,7 @@ public:
 		}
 		if (test == true)
 		{
-			Delete(num);
+			deletting(num);
 		}
 		else
 		{
@@ -170,15 +178,115 @@ public:
 		temp = new element;
 		temp->next = NULL;
 		temp->data = key;
-		while (unique() == false)
+		while (isUnique(temp->data) == false)
 		{
 			cout << "uncorrectable key!" << endl << "input new: ";
 			cin >> temp->data;
 		}
 		temp->data1 = item;
-		add();
+		add(temp);
 	}
 };
+
+class file :public list<string, fileinfo>
+{
+private:
+	list<string, string> entnairs;
+public:
+	file() {}
+	file(string name)
+	{
+		//list<string, fileinfo>::add(name, fileinfo());
+		entnairs.add(name, " ");
+	}
+	void create(string name)
+	{
+		//list<string, fileinfo>::add(name, fileinfo());
+		entnairs.add(name, " ");
+	}
+	void write(string name, string str)
+	{
+		entnairs[name] = str;
+	}
+	void show(string name)
+	{
+		cout << entnairs[name];
+	}
+};
+
+class folder :public list<string, fileinfo>//класс папка, для хоанения указателя на след. скласс(также выполняющий функ-цию компоновщику, наверное) 
+{
+private:
+	list<string, folder*> pointer;
+	file files;
+public:
+	folder() {}
+	void adding(string name, folder* point)
+	{
+		pointer.add(name, point);
+		list<string, fileinfo>::add(name, fileinfo());
+	}
+	void create(string name)
+	{
+		list<string, fileinfo>::add(name, fileinfo());
+		files.create(name);
+	}
+	/*void _delete(int day, int month, int year, int hour, int minute)
+	{
+		files.deletting(fileinfo(day, month, year, hour, minute));
+	}*/
+	void show(string name)
+	{
+		files.show(name);
+	}
+	void write(string name, string str)
+	{
+		files.write(name, str);
+	}
+	/*friend ostream& operator<<(ostream& out, folder& elem)
+	{
+		out << elem.files;
+		return out;
+	}*/
+	folder* getAddres(string name)
+	{
+		return pointer[name];
+	}
+};
+
+/*class composier//тест класс
+{
+private:
+	folder folders;
+	file files;
+public:
+	composier() {}
+	composier(string name, folder* point)
+	{
+		folders.adding(name, point);
+	}
+	void addFile(string name)
+	{
+		files.create(name);
+	}
+	void addFolder(string name,folder* point)
+	{
+		folders.adding(name, point);
+	}
+	void _delete(int day,int month,int year,int hour,int minute)
+	{
+		files.deletting(fileinfo(day, month, year, hour, minute));
+	}
+	friend ostream& operator<<(ostream& out, composier& elem)
+	{
+		out << elem.folders << elem.files << endl;
+		return out;
+	}
+	folder* open(string name)
+	{
+		return this->folders.getAddres(name);
+	}
+};*/
 
 char Interpreter(string& str)
 {
@@ -206,6 +314,14 @@ char Interpreter(string& str)
 	{
 		return '6';
 	}
+	if (str == "openf")
+	{
+		return '7';
+	}
+	if (str == "write")
+	{
+		return '8';
+	}
 	if (str == "end")
 	{
 		return '0';
@@ -213,78 +329,160 @@ char Interpreter(string& str)
 	return 'e';
 }
 
-int main()
+void MENU()
 {
-	string file;
-	list<string, fileinfo> a;
-	string Choise;
-	cout << "V:\\virtual>";
-	cin >> Choise;
-	cout << endl;
-	char choise;
-	choise = Interpreter(Choise);
-	while (choise)
+	cout << endl << "menu: show menu" << endl
+		<< "dir: show all file" << endl
+		<< "create: create a file" << endl
+		<< "createf: create a folder " << endl
+		<< "show: open the file to read " << endl
+		<< "delete: delete certain file" << endl
+		<< "openf: open a folder" << endl
+		<< "write: write down info in file" << endl
+		<< "end: close the programm" << endl << endl;
+}
+
+void test_n_file(string& str)
+{
+	string::size_type n = str.find(".txt");
+	while (n == string::npos)
 	{
-		switch (choise)
+		cout << "this is not a file. try again: ";
+		cin >> str;
+		n = str.find(".txt");
+	}
+}
+
+void test_n_folder(string& str)
+{
+	string::size_type n = str.find(".txt");
+	while (n != string::npos)
+	{
+		cout << "this is not a folder. try again: ";
+		cin >> str;
+		n = str.find(".txt");
+	}
+}
+
+void debugging()
+{
+	cout << "test, doesn't work" << endl;
+}
+
+void openf(string str, folder* elem)
+{
+	string choose, catalog;
+	char choice;
+	catalog = str;
+	cout << catalog << ">";
+	cin >> choose;
+	choice = Interpreter(choose);
+	while (choice)
+	{
+		switch (choice)
 		{
 		case '1':
 		{
-			cout << endl << "menu: show menu" << endl
-				<< "dir: show all file" << endl
-				<< "create: create a file" << endl
-				<< "createf: create a folder " << endl
-				<< "show: show certain file" << endl
-				<< "delete: delete certain file" << endl
-				<< "end: close the programm" << endl << endl;
+			MENU();
 			break;
 		}
 		case '2':
 		{
-			cout << a;
+			cout << endl << *elem << endl;
 			break;
 		}
 		case '3':
 		{
-			cout << "input name: ";
-			cin >> file;
-			SYSTEMTIME st;
-			GetLocalTime(&st);
-			a.add(file, fileinfo(st.wDay, st.wMonth, st.wYear, st.wHour, st.wMinute));
+			string name;
+			cout << endl << "input name of file: ";
+			cin >> name;
+			test_n_file(name);
+			elem->create(name);
 			break;
 		}
 		case '4':
 		{
+			cout << endl;
+			debugging();//удаляет и файлы и папки, временно отключена, так как вероятно некоректно выполняет задание
+			/*cout << endl << "input date as day.month.year hour:minute  : ";
 			int day, month, year, hour, minute;
 			cin >> day;
 			cin >> month;
 			cin >> year;
 			cin >> hour;
 			cin >> minute;
-			a.Delete(fileinfo(day, month, year, hour, minute));
+			elem->_delete(day,month,year,hour,minute);
+			cout << endl;*/
 			break;
 		}
 		case '5':
 		{
-			cout << "input a name of file: ";
-			cin >> file;
-			cout << file << " : " << a[file];
+			cout << endl;
+			string name;
+			cout << "input name of file:";
+			test_n_file(name);
+			elem->show(name);
 			break;
 		}
 		case '6':
-			cout << "not ready" << endl;
+		{
+			string Folder;
+			cout << endl << "input name of folder: ";
+			cin >> Folder;
+			test_n_folder(Folder);
+			elem->adding(Folder, new folder);
 			break;
+		}
+		case '7':
+		{
+			string Folder;
+			cout << endl << "input name of folder: ";
+			cin >> Folder;
+			test_n_folder(Folder);
+			openf(catalog + "\\" + Folder, elem->getAddres(Folder));
+			break;
+		}
+		case '8':
+		{
+			string name;
+			string str;
+			cout << "input name of file:";
+			cin >> name;
+			test_n_file(name);
+			cout << "input what you wanna write down:";
+			cin.get();
+			getline(cin, str);
+			elem->write(name, str);
+			break;
+		}
 		case 'e':
 		{
-			cout << endl << "error! try again" << endl << endl;
+			cout << endl << "error! try again" << endl;
 			break;
 		}
 		case '0':
-			return 0;
+		{
+			return;
 		}
-		cout << endl << "V:\\virtual>";
-		cin >> Choise;
-		cout << endl;
-		choise = Interpreter(Choise);
+		}
+		cout << endl << catalog << ">";
+		cin >> choose;
+		choice = Interpreter(choose);
 	}
+}
+
+int main()
+{
+	MENU();
+	folder Virtual;
+	Virtual.adding("virtual", new folder);
+	openf("V:\\virtual", Virtual.getAddres("virtual"));
+	/*file test;
+	test.create("file.txt");
+	string text;
+	getline(cin, text);
+	test.write("file.txt", text);
+	cout << test;
+	test.show("file.txt");*/
 	return 0;
 }
