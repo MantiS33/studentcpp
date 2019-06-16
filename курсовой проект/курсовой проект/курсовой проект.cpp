@@ -3,15 +3,13 @@
 #include <Windows.h>
 using namespace std;
 
-class fileinfo//специальный класс для получения времени
+class time//специальный класс для получения времени
 {
-private:
+protected:
 	unsigned int day, month, year, hour, minute;
-	//unsigned int count;
 public:
-	fileinfo()
+	time()
 	{
-		//this->count = 0;
 		SYSTEMTIME st;
 		GetLocalTime(&st);
 		this->day = st.wDay;
@@ -20,26 +18,44 @@ public:
 		this->hour = st.wHour;
 		this->minute = st.wMinute;
 	}
-	fileinfo(int Day, int Month, int Year, int Hour, int Minute) :day(Day), month(Month), year(Year), hour(Hour), minute(Minute) {}
-	bool operator<=(const fileinfo& x)
+	time(int Day, int Month, int Year, int Hour, int Minute) :day(Day), month(Month), year(Year), hour(Hour), minute(Minute) {}
+	bool operator<=(const time& x)
 	{
 		return (this->day <= x.day) && (this->month <= x.month) && (this->year <= x.year) && (this->hour <= x.hour) && (this->minute <= x.minute);
 	}
-	bool operator !=(const fileinfo& y)
+	bool operator !=(const time& y)
 	{
 		return (!(this->day == y.day)) && (!(this->month == y.month)) && (!(this->year == y.year)) && (!(this->hour == y.hour)) && (!(this->minute == y.minute));
 	}
-	friend ostream& operator<<(ostream& out, const fileinfo& date)
+	friend ostream& operator<<(ostream& out, const time& date)
 	{
 		out << date.day << "." << date.month << "." << date.year << "  " << date.hour << ":" << date.minute;
 		return out;
 	}
 };
 
+class timecount :public time
+{
+private:
+	int count;
+public:
+	timecount() :count(0), time::time() {}
+	timecount(int day, int month, int year, int hour, int minute) : time::time(day, month, year, hour, minute) {}
+	friend ostream& operator<<(ostream& out, const timecount& date)
+	{
+		out << date.day << '.' << date.month << '.' << date.year << "  " << date.hour << ':' << date.minute << "  " << date.count;
+		return out;
+	}
+	void increase()
+	{
+		this->count = this->count + 1;
+	}
+};
+
 template<class Tkey, class Tvalue>//основная шаблонная коллекция
 class list
 {
-private:
+protected:
 	struct element
 	{
 		Tkey data;
@@ -47,7 +63,6 @@ private:
 		element* next;
 	};
 	element* head, * tail, * temp;
-protected:
 	void add(element* elem)
 	{
 		if (head != NULL)
@@ -186,9 +201,21 @@ public:
 		temp->data1 = item;
 		add(temp);
 	}
+	void getAll(Tvalue value)
+	{
+		temp = head;
+		while (temp != NULL)
+		{
+			if (temp->data1 == value)
+			{
+				cout << temp->data << " : " << temp->data1 << endl;
+			}
+			temp = temp->next;
+		}
+	}
 };
 
-class file :public list<string, fileinfo>
+class file :public list<string, timecount>
 {
 private:
 	list<string, string> entnairs;
@@ -196,25 +223,28 @@ public:
 	file() {}
 	file(string name)
 	{
-		//list<string, fileinfo>::add(name, fileinfo());
+		list<string, timecount>::add(name, timecount());
 		entnairs.add(name, " ");
 	}
 	void create(string name)
 	{
-		//list<string, fileinfo>::add(name, fileinfo());
+		list<string, timecount>::add(name, timecount());
 		entnairs.add(name, " ");
 	}
 	void write(string name, string str)
 	{
 		entnairs[name] = str;
+		list<string, timecount>::operator[](name).increase();
+
 	}
 	void show(string name)
 	{
 		cout << entnairs[name];
+		list<string, timecount>::operator[](name).increase();
 	}
 };
 
-class folder :public list<string, fileinfo>//класс папка, для хоанения указателя на след. скласс(также выполняющий функ-цию компоновщику, наверное) 
+class folder :public list<string, time>//класс папка, для хоанения указателя на след. скласс(также выполняющий функ-цию компоновщика, наверное) 
 {
 private:
 	list<string, folder*> pointer;
@@ -224,17 +254,17 @@ public:
 	void adding(string name, folder* point)
 	{
 		pointer.add(name, point);
-		list<string, fileinfo>::add(name, fileinfo());
+		list<string, time>::add(name, time());
 	}
 	void create(string name)
 	{
-		list<string, fileinfo>::add(name, fileinfo());
+		//list<string, fileinfo>::add(name, fileinfo());
 		files.create(name);
 	}
-	/*void _delete(int day, int month, int year, int hour, int minute)
+	void _delete(int day, int month, int year, int hour, int minute)
 	{
-		files.deletting(fileinfo(day, month, year, hour, minute));
-	}*/
+		files.deletting(timecount(day, month, year, hour, minute));
+	}
 	void show(string name)
 	{
 		files.show(name);
@@ -243,50 +273,15 @@ public:
 	{
 		files.write(name, str);
 	}
-	/*friend ostream& operator<<(ostream& out, folder& elem)
+	void dir()
 	{
-		out << elem.files;
-		return out;
-	}*/
+		cout << *this << files;
+	}
 	folder* getAddres(string name)
 	{
 		return pointer[name];
 	}
 };
-
-/*class composier//тест класс
-{
-private:
-	folder folders;
-	file files;
-public:
-	composier() {}
-	composier(string name, folder* point)
-	{
-		folders.adding(name, point);
-	}
-	void addFile(string name)
-	{
-		files.create(name);
-	}
-	void addFolder(string name,folder* point)
-	{
-		folders.adding(name, point);
-	}
-	void _delete(int day,int month,int year,int hour,int minute)
-	{
-		files.deletting(fileinfo(day, month, year, hour, minute));
-	}
-	friend ostream& operator<<(ostream& out, composier& elem)
-	{
-		out << elem.folders << elem.files << endl;
-		return out;
-	}
-	folder* open(string name)
-	{
-		return this->folders.getAddres(name);
-	}
-};*/
 
 char Interpreter(string& str)
 {
@@ -364,11 +359,6 @@ void test_n_folder(string& str)
 	}
 }
 
-void debugging()
-{
-	cout << "test, doesn't work" << endl;
-}
-
 void openf(string str, folder* elem)
 {
 	string choose, catalog;
@@ -388,7 +378,8 @@ void openf(string str, folder* elem)
 		}
 		case '2':
 		{
-			cout << endl << *elem << endl;
+			cout << endl;
+			elem->dir();
 			break;
 		}
 		case '3':
@@ -402,17 +393,14 @@ void openf(string str, folder* elem)
 		}
 		case '4':
 		{
-			cout << endl;
-			debugging();//удаляет и файлы и папки, временно отключена, так как вероятно некоректно выполняет задание
-			/*cout << endl << "input date as day.month.year hour:minute  : ";
+			cout << endl << "input date as day.month.year hour:minute  : ";
 			int day, month, year, hour, minute;
 			cin >> day;
 			cin >> month;
 			cin >> year;
 			cin >> hour;
 			cin >> minute;
-			elem->_delete(day,month,year,hour,minute);
-			cout << endl;*/
+			elem->_delete(day, month, year, hour, minute);
 			break;
 		}
 		case '5':
@@ -477,12 +465,5 @@ int main()
 	folder Virtual;
 	Virtual.adding("virtual", new folder);
 	openf("V:\\virtual", Virtual.getAddres("virtual"));
-	/*file test;
-	test.create("file.txt");
-	string text;
-	getline(cin, text);
-	test.write("file.txt", text);
-	cout << test;
-	test.show("file.txt");*/
 	return 0;
 }
