@@ -88,6 +88,15 @@ protected:
 	}
 public:
 	list() :head(NULL), tail(NULL), temp(NULL) {}
+	list(list& copy)
+	{
+		copy.temp = copy.head;
+		while (copy.temp != NULL)
+		{
+			this->add(copy.temp);
+			copy.temp = copy.temp->next;
+		}
+	}
 	~list()
 	{
 		while (head)
