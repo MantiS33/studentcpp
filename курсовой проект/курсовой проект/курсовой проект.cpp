@@ -52,7 +52,7 @@ public:
 	}
 };
 
-template<class Tkey, class Tvalue>//основная шаблонная коллекция
+template<class Tkey, class Tvalue>
 class list
 {
 protected:
@@ -144,7 +144,48 @@ public:
 		elem.add(elem.temp);
 		return in;
 	}
-	void deletting(Tvalue num)
+	void delete_key(Tkey num)
+	{
+		temp = head;
+		while (temp != NULL)
+		{
+			if (temp->data == num)
+			{
+				if (temp == head)
+				{
+					head = head->next;
+					delete temp;
+					break;
+				}
+				if (temp == tail)
+				{
+					temp = head;
+					while (temp->next != tail)
+					{
+						temp = temp->next;
+					}
+					delete tail;
+					temp->next = NULL;
+					tail = temp;
+					break;
+				}
+				if (temp != head && temp != tail)
+				{
+					temp = head;
+					while (temp->next->data != num)
+					{
+						temp = temp->next;
+					}
+					element* Temp = temp->next;
+					temp->next = temp->next->next;
+					delete Temp;
+					break;
+				}
+			}
+			temp = temp->next;
+		}
+	}
+	void delete_value(Tvalue num)
 	{
 		bool test = false;
 		temp = head;
@@ -190,7 +231,7 @@ public:
 		}
 		if (test == true)
 		{
-			deletting(num);
+			delete_value(num);
 		}
 		else
 		{
@@ -209,18 +250,6 @@ public:
 		}
 		temp->data1 = item;
 		add(temp);
-	}
-	void getAll(Tvalue value)
-	{
-		temp = head;
-		while (temp != NULL)
-		{
-			if (temp->data1 == value)
-			{
-				cout << temp->data << " : " << temp->data1 << endl;
-			}
-			temp = temp->next;
-		}
 	}
 };
 
@@ -267,12 +296,11 @@ public:
 	}
 	void create(string name)
 	{
-		//list<string, fileinfo>::add(name, fileinfo());
 		files.create(name);
 	}
 	void _delete(int day, int month, int year, int hour, int minute)
 	{
-		files.deletting(timecount(day, month, year, hour, minute));
+		files.delete_value(timecount(day, month, year, hour, minute));
 	}
 	void show(string name)
 	{
