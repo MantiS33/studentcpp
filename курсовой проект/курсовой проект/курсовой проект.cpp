@@ -445,6 +445,7 @@ void openf(string str, folder* elem)
 			cout << endl;
 			string name;
 			cout << "input name of file:";
+			cin >> name;
 			test_n_file(name);
 			elem->show(name);
 			break;
