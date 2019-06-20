@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-class vector//специальный пользовательский класс для теста коллекции
+class vector
 {
 private:
 	int x, y;
@@ -16,10 +16,10 @@ public:
 	}
 };
 
-template<class Tkey, class Tvalue>//шаблонная коллекция, аасоциативный массив с уникальными ключами
+template<class Tkey, class Tvalue>
 class list
 {
-private:
+protected:
 	struct element
 	{
 		Tkey data;
@@ -27,7 +27,7 @@ private:
 		element* next;
 	};
 	element* head, * tail, * temp;
-	void add(element* elem)//функция добавления элементов в список, вынесена специально, чтобы убрать повторяемость кода
+	void add(element* elem)
 	{
 		if (head != NULL)
 		{
@@ -38,6 +38,17 @@ private:
 		{
 			head = tail = elem;
 		}
+	}
+	bool isUnique(Tkey& elem)
+	{
+		element* Temp = head;
+		while (Temp != NULL)
+		{
+			if (Temp->data == elem)
+				return false;
+			Temp = Temp->next;
+		}
+		return true;
 	}
 public:
 	list() :head(NULL), tail(NULL), temp(NULL) {}
@@ -59,18 +70,7 @@ public:
 			head = tail;
 		}
 	}
-	bool isUnique(Tkey& elem)//функция, проверяющая ключ на уникальность 
-	{
-		element* Temp = head;
-		while (Temp != NULL)
-		{
-			if (Temp->data == elem)
-				return false;
-			Temp = Temp->next;
-		}
-		return true;
-	}
-	Tvalue& operator[](Tkey key)//перегрузка оператора [ ], для вывода и записи элемента по ключу
+	Tvalue& operator[](Tkey key)
 	{
 		this->temp = this->head;
 		while (this->temp != NULL)
@@ -83,7 +83,7 @@ public:
 		}
 		throw;
 	}
-	friend ostream& operator<<(ostream & out, list & elem)//перегрука ввывода
+	friend ostream& operator<<(ostream& out, list& elem)
 	{
 		elem.temp = elem.head;
 		while (elem.temp != NULL)
@@ -93,7 +93,7 @@ public:
 		}
 		return out;
 	}
-	friend istream& operator>>(istream & in, list & elem)//перегрузка ввода с проверкой ключа
+	friend istream& operator>>(istream& in, list& elem)
 	{
 		elem.temp = new element;
 		elem.temp->next = NULL;
@@ -108,7 +108,7 @@ public:
 		elem.add(elem.temp);
 		return in;
 	}
-	void deletting(Tkey num)//функция для удаления элемента по ключу
+	void delete_key(Tkey num)
 	{
 		temp = head;
 		while (temp != NULL)
@@ -149,7 +149,60 @@ public:
 			temp = temp->next;
 		}
 	}
-	void add(Tkey key, Tvalue item)//функция для добавления элемента
+	void delete_value(Tvalue num)
+	{
+		bool test = false;
+		temp = head;
+		while (temp != NULL)
+		{
+			if (temp->data1 <= num)
+			{
+				if (temp == head)
+				{
+					head = head->next;
+					delete temp;
+					test = true;
+					break;
+				}
+				if (temp == tail)
+				{
+					temp = head;
+					while (temp->next != tail)
+					{
+						temp = temp->next;
+					}
+					delete tail;
+					temp->next = NULL;
+					tail = temp;
+					test = true;
+					break;
+				}
+				if (temp != head && temp != tail)
+				{
+					temp = head;
+					while (temp->next->data1 != num)
+					{
+						temp = temp->next;
+					}
+					element* Temp = temp->next;
+					temp->next = temp->next->next;
+					delete Temp;
+					test = false;
+					break;
+				}
+			}
+			temp = temp->next;
+		}
+		if (test == true)
+		{
+			delete_value(num);
+		}
+		else
+		{
+			return;
+		}
+	}
+	void add(Tkey key, Tvalue item)
 	{
 		temp = new element;
 		temp->next = NULL;
@@ -166,12 +219,12 @@ public:
 
 int main()
 {
-	list<int, char> a;//работа со стандартными типами данных
-	list<string, vector> b;//работа с пользовательским типом данных
+	list<int, char> a;
+	list<string, vector> b;
 	char choise;
 	cout << "1)int and char" << endl << "2)vector" << endl << "0)close" << endl << ">";
 	cin >> choise;
-	while (choise)//дальше прописан интерфейс для работы с программой
+	while (choise)
 	{
 		switch (choise)
 		{
@@ -211,7 +264,7 @@ int main()
 					int num;
 					cout << "input key: ";
 					cin >> num;
-					a.deletting(num);
+					a.delete_key(num);
 					break;
 				}
 				}
@@ -236,11 +289,11 @@ int main()
 				{
 				case '1':
 				{
-					string str;                   //функция add нужна, так как класс vector, созданный для проверки
-					cin >> str;                   //не имеет перегруки ввода, поэтуму выдает ошибку, если писать 
-					int num, num1;                //cin>>b (бинарный">>": не найден оперратор, принимающий правый операнд тип "Tvalue"  строка 98)
-					cin >> num;                   //я вижу 2 способа решения^ перегрузка ввода для vector и отдельная функция ввода,
-					cin >> num1;                  //то есть add, для ввода значений в коллекцию
+					string str;
+					cin >> str; 
+					int num, num1;
+					cin >> num;
+					cin >> num1;
 					b.add(str, vector(num, num1));
 					break;
 				}
@@ -262,7 +315,7 @@ int main()
 					string i;
 					cout << "input key: ";
 					cin >> i;
-					b.deletting(i);
+					b.delete_key(i);
 					break;
 				}
 				}
