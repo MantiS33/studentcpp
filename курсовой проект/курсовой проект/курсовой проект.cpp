@@ -144,7 +144,7 @@ public:
 		elem.add(elem.temp);
 		return in;
 	}
-	void delete_key(Tkey num)
+	virtual void _delete(Tkey num)
 	{
 		temp = head;
 		while (temp != NULL)
@@ -185,7 +185,44 @@ public:
 			temp = temp->next;
 		}
 	}
-	void delete_value(Tvalue num)
+	virtual void add(Tkey key, Tvalue item)
+	{
+		temp = new element;
+		temp->next = NULL;
+		temp->data = key;
+		while (isUnique(temp->data) == false)
+		{
+			cout << "uncorrectable key!" << endl << "input new: ";
+			cin >> temp->data;
+		}
+		temp->data1 = item;
+		add(temp);
+	}
+};
+
+class file :public list<string, timecount>
+{
+private:
+	list<string, string> entnairs;
+public:
+	file() {}
+	file(string name)
+	{
+		list<string, timecount>::add(name, timecount());
+		entnairs.add(name, " ");
+	}
+	void create(string name)
+	{
+		list<string, timecount>::add(name, timecount());
+		entnairs.add(name, " ");
+	}
+	void write(string name, string str)
+	{
+		entnairs[name] = str;
+		list<string, timecount>::operator[](name).increase();
+
+	}
+	void _delete(timecount num)
 	{
 		bool test = false;
 		temp = head;
@@ -231,49 +268,12 @@ public:
 		}
 		if (test == true)
 		{
-			delete_value(num);
+			_delete(num);
 		}
 		else
 		{
 			return;
 		}
-	}
-	void add(Tkey key, Tvalue item)
-	{
-		temp = new element;
-		temp->next = NULL;
-		temp->data = key;
-		while (isUnique(temp->data) == false)
-		{
-			cout << "uncorrectable key!" << endl << "input new: ";
-			cin >> temp->data;
-		}
-		temp->data1 = item;
-		add(temp);
-	}
-};
-
-class file :public list<string, timecount>
-{
-private:
-	list<string, string> entnairs;
-public:
-	file() {}
-	file(string name)
-	{
-		list<string, timecount>::add(name, timecount());
-		entnairs.add(name, " ");
-	}
-	void create(string name)
-	{
-		list<string, timecount>::add(name, timecount());
-		entnairs.add(name, " ");
-	}
-	void write(string name, string str)
-	{
-		entnairs[name] = str;
-		list<string, timecount>::operator[](name).increase();
-
 	}
 	void show(string name)
 	{
@@ -300,7 +300,7 @@ public:
 	}
 	void _delete(int day, int month, int year, int hour, int minute)
 	{
-		files.delete_value(timecount(day, month, year, hour, minute));
+		files._delete(timecount(day, month, year, hour, minute));
 	}
 	void show(string name)
 	{
@@ -423,7 +423,8 @@ void openf(string str, folder* elem)
 		{
 			string name;
 			cout << endl << "input name of file: ";
-			cin >> name;
+			cin.get();
+			getline(cin, name);
 			test_n_file(name);
 			elem->create(name);
 			break;
@@ -445,7 +446,8 @@ void openf(string str, folder* elem)
 			cout << endl;
 			string name;
 			cout << "input name of file:";
-			cin >> name;
+			cin.get();
+			getline(cin, name);
 			test_n_file(name);
 			elem->show(name);
 			break;
@@ -454,7 +456,8 @@ void openf(string str, folder* elem)
 		{
 			string Folder;
 			cout << endl << "input name of folder: ";
-			cin >> Folder;
+			cin.get();
+			getline(cin, Folder);
 			test_n_folder(Folder);
 			elem->adding(Folder, new folder);
 			break;
@@ -463,7 +466,8 @@ void openf(string str, folder* elem)
 		{
 			string Folder;
 			cout << endl << "input name of folder: ";
-			cin >> Folder;
+			cin.get();
+			getline(cin, Folder);
 			test_n_folder(Folder);
 			openf(catalog + "\\" + Folder, elem->getAddres(Folder));
 			break;
@@ -473,7 +477,8 @@ void openf(string str, folder* elem)
 			string name;
 			string str;
 			cout << "input name of file:";
-			cin >> name;
+			cin.get();
+			getline(cin, name);
 			test_n_file(name);
 			cout << "input what you wanna write down:";
 			cin.get();
