@@ -38,8 +38,15 @@ void Calculator::numbers()
     QPushButton *button=(QPushButton*)sender();
     double num;
     QString str;
+    if(ui->label->text().contains(".") && button->text()=="0")
+    {
+        str=ui->label->text()+button->text();
+    }
+    else
+    {
     num=(ui->label->text()+button->text()).toDouble();
     str=QString::number(num,'g',10);
+    }
     ui->label->setText(str);
 }
 
@@ -84,7 +91,11 @@ void Calculator::math_operations()
 
 void Calculator::on_button_clear_clicked()
 {
-
+   ui->button_plus->setChecked(false);
+   ui->button_minus->setChecked(false);
+   ui->button_mult->setChecked(false);
+   ui->button_devide->setChecked(false);
+   ui->label->setText("0");
 }
 
 void Calculator::on_button_result_clicked()
@@ -117,7 +128,7 @@ void Calculator::on_button_result_clicked()
     {
       if(num_second==0.0)
         {
-          ui->label->setText("0");
+          ui->label->setText("ERROR");
         }
       else
         {
