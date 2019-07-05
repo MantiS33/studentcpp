@@ -2,6 +2,8 @@
 #define CALCULATOR_H
 
 #include <QMainWindow>
+#include <QKeyEvent>
+#include <Qt>
 
 namespace Ui {
 class Calculator;
@@ -14,9 +16,12 @@ class Calculator : public QMainWindow
 public:
     explicit Calculator(QWidget *parent = nullptr);
     ~Calculator();
+    void input(QString);
 
 private:
     Ui::Calculator *ui;
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
 private slots:
     void numbers();
     void on_button_dot_clicked();

@@ -451,7 +451,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
      <string>8</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_devide">
+   <widget class="QPushButton" name="button_divide">
     <property name="geometry">
      <rect>
       <x>155</x>
