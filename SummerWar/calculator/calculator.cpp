@@ -1,12 +1,11 @@
 #include "calculator.h"
 #include "ui_calculator.h"
 
-Calculator::Calculator(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::Calculator)
+double num_first;
+
+Calculator::Calculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::Calculator)
 {
     ui->setupUi(this);
-
     connect(ui->button_0,SIGNAL(clicked()),this,SLOT(numbers()));
     connect(ui->button_1,SIGNAL(clicked()),this,SLOT(numbers()));
     connect(ui->button_2,SIGNAL(clicked()),this,SLOT(numbers()));
@@ -17,6 +16,16 @@ Calculator::Calculator(QWidget *parent) :
     connect(ui->button_7,SIGNAL(clicked()),this,SLOT(numbers()));
     connect(ui->button_8,SIGNAL(clicked()),this,SLOT(numbers()));
     connect(ui->button_9,SIGNAL(clicked()),this,SLOT(numbers()));
+    connect(ui->button_PlusMinus,SIGNAL(clicked()),this,SLOT(operations()));
+    connect(ui->button_percent,SIGNAL(clicked()),this,SLOT(operations()));
+    connect(ui->button_plus,SIGNAL(clicked()),this,SLOT(math_operations()));
+    connect(ui->button_minus,SIGNAL(clicked()),this,SLOT(math_operations()));
+    connect(ui->button_devide,SIGNAL(clicked()),this,SLOT(math_operations()));
+    connect(ui->button_mult,SIGNAL(clicked()),this,SLOT(math_operations()));
+    ui->button_devide->setCheckable(true);
+    ui->button_mult->setCheckable(true);
+    ui->button_plus->setCheckable(true);
+    ui->button_minus->setCheckable(true);
 }
 
 Calculator::~Calculator()
@@ -26,17 +35,96 @@ Calculator::~Calculator()
 
 void Calculator::numbers()
 {
-    QPushButton *button = (QPushButton *)sender();
-    double num,temp;
-    temp=(ui->label->text()).toDouble();
-    if(abs(temp) / 10 >= 0)
+    QPushButton *button=(QPushButton*)sender();
+    double num;
+    QString str;
+    num=(ui->label->text()+button->text()).toDouble();
+    str=QString::number(num,'g',10);
+    ui->label->setText(str);
+}
+
+void Calculator::on_button_dot_clicked()
+{
+    if(!(ui->label->text().contains('.')))
     {
-        num=(temp * 10)+(button->text()).toDouble();
+        ui->label->setText(ui->label->text()+".");
     }
-    else
+
+}
+
+void Calculator::operations()
+{
+    QPushButton *button=(QPushButton*)sender();
+    double num;
+    QString str;
+    if(button->text()=="+/-")
     {
-        num=temp;
+        num=(ui->label->text()).toDouble();
+        num=num*(-1);
+        str=QString::number(num,'g',10);
+        ui->label->setText(str);
     }
-    //num=(ui->label->text()+button->text()).toDouble();
-    ui->label->setText(QString::number(num,'g',10));
+    else if(button->text()=="%")
+      {
+          num=(ui->label->text()).toDouble();
+          num=num*0.01;
+          str=QString::number(num,'g',10);
+          ui->label->setText(str);
+      }
+}
+
+void Calculator::math_operations()
+{
+  QPushButton *button=(QPushButton*)sender();
+  num_first=ui->label->text().toDouble();
+  ui->label->setText("0");
+  button->setChecked(true);
+
+}
+
+void Calculator::on_button_clear_clicked()
+{
+
+}
+
+void Calculator::on_button_result_clicked()
+{
+  double result,num_second;
+  QString str;
+  num_second=ui->label->text().toDouble();
+  if(ui->button_plus->isChecked())
+    {
+      result=num_first+num_second;
+      str=QString::number(result,'g',10);
+      ui->label->setText(str);
+      ui->button_plus->setChecked(false);
+    }
+  else if(ui->button_minus->isChecked())
+    {
+      result=num_first-num_second;
+      str=QString::number(result,'g',10);
+      ui->label->setText(str);
+      ui->button_minus->setChecked(false);
+    }
+  else if(ui->button_mult->isChecked())
+    {
+      result=num_first*num_second;
+      str=QString::number(result,'g',10);
+      ui->label->setText(str);
+      ui->button_mult->setChecked(false);
+    }
+  else if(ui->button_devide->isChecked())
+    {
+      if(num_second==0.0)
+        {
+          ui->label->setText("0");
+        }
+      else
+        {
+          result=num_first/num_second;
+          str=QString::number(result,'g',10);
+          ui->label->setText(str);
+        }
+      ui->button_devide->setChecked(false);
+    }
 }

@@ -19,6 +19,11 @@ private:
     Ui::Calculator *ui;
 private slots:
     void numbers();
+    void on_button_dot_clicked();
+    void operations();
+    void on_button_clear_clicked();
+    void on_button_result_clicked();
+    void math_operations();
 };
 
 #endif // CALCULATOR_H
