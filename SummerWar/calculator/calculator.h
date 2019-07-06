@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <Qt>
+#include <QtMath>
 
 namespace Ui {
 class Calculator;

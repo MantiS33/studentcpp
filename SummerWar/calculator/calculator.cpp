@@ -22,6 +22,10 @@ Calculator::Calculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::Calcul
     connect(ui->button_minus,SIGNAL(clicked()),this,SLOT(math_operations()));
     connect(ui->button_divide,SIGNAL(clicked()),this,SLOT(math_operations()));
     connect(ui->button_mult,SIGNAL(clicked()),this,SLOT(math_operations()));
+    connect(ui->button_sin,SIGNAL(clicked()),this,SLOT(operations()));
+    connect(ui->button_cos,SIGNAL(clicked()),this,SLOT(operations()));
+    connect(ui->button_tan,SIGNAL(clicked()),this,SLOT(operations()));
+    connect(ui->button_sqr,SIGNAL(clicked()),this,SLOT(operations()));
     ui->button_divide->setCheckable(true);
     ui->button_mult->setCheckable(true);
     ui->button_plus->setCheckable(true);
@@ -58,8 +62,6 @@ void Calculator::keyPressEvent(QKeyEvent *event)
         ui->button_6->clicked();
     if(key==Qt::Key_7)
         ui->button_7->clicked();
-    if(key==Qt::Key_8)
-        ui->button_8->clicked();
     if(key==Qt::Key_8)
         ui->button_8->clicked();
     if(key==Qt::Key_9)
@@ -124,6 +126,34 @@ void Calculator::operations()
           num=num*0.01;
           str=QString::number(num,'g',10);
           ui->label->setText(str);
+      }
+    if(button==ui->button_sin)
+      {
+        num=ui->label->text().toDouble();
+        num=sin(num);
+        str=QString::number(num,'g',10);
+        ui->label->setText(str);
+      }
+    else if(button==ui->button_cos)
+      {
+        num=ui->label->text().toDouble();
+        num=cos(num);
+        str=QString::number(num,'g',10);
+        ui->label->setText(str);
+      }
+    else if(button==ui->button_tan)
+      {
+        num=ui->label->text().toDouble();
+        num=tan(num);
+        str=QString::number(num,'g',15);
+        ui->label->setText(str);
+      }
+    else if(button==ui->button_sqr)
+      {
+        num=ui->label->text().toDouble();
+        num=num*num;
+        str=QString::number(num,'g',10);
+        ui->label->setText(str);
       }
 }
 
