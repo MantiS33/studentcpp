@@ -22,7 +22,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>250</width>
+      <width>400</width>
       <height>70</height>
      </rect>
     </property>
@@ -47,7 +47,7 @@ qproperty-alignment: 'AlignVCenter | AlignRight';
    <widget class="QPushButton" name="button_0">
     <property name="geometry">
      <rect>
-      <x>55</x>
+      <x>205</x>
       <y>280</y>
       <width>48</width>
       <height>48</height>
@@ -77,7 +77,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_dot">
     <property name="geometry">
      <rect>
-      <x>105</x>
+      <x>255</x>
       <y>280</y>
       <width>48</width>
       <height>48</height>
@@ -107,7 +107,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_plus">
     <property name="geometry">
      <rect>
-      <x>205</x>
+      <x>355</x>
       <y>280</y>
       <width>48</width>
       <height>48</height>
@@ -137,7 +137,7 @@ color:rgb(255, 85, 0);
    <widget class="QPushButton" name="button_result">
     <property name="geometry">
      <rect>
-      <x>155</x>
+      <x>305</x>
       <y>280</y>
       <width>48</width>
       <height>48</height>
@@ -167,7 +167,7 @@ color:white;
    <widget class="QPushButton" name="button_3">
     <property name="geometry">
      <rect>
-      <x>155</x>
+      <x>305</x>
       <y>230</y>
       <width>48</width>
       <height>48</height>
@@ -197,7 +197,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_2">
     <property name="geometry">
      <rect>
-      <x>105</x>
+      <x>255</x>
       <y>230</y>
       <width>48</width>
       <height>48</height>
@@ -227,7 +227,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_minus">
     <property name="geometry">
      <rect>
-      <x>205</x>
+      <x>355</x>
       <y>230</y>
       <width>48</width>
       <height>48</height>
@@ -257,7 +257,7 @@ color:rgb(255, 85, 0);
    <widget class="QPushButton" name="button_1">
     <property name="geometry">
      <rect>
-      <x>55</x>
+      <x>205</x>
       <y>230</y>
       <width>48</width>
       <height>48</height>
@@ -286,7 +286,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_6">
     <property name="geometry">
      <rect>
-      <x>155</x>
+      <x>305</x>
       <y>180</y>
       <width>48</width>
       <height>48</height>
@@ -316,7 +316,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_5">
     <property name="geometry">
      <rect>
-      <x>105</x>
+      <x>255</x>
       <y>180</y>
       <width>48</width>
       <height>48</height>
@@ -346,7 +346,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_mult">
     <property name="geometry">
      <rect>
-      <x>205</x>
+      <x>355</x>
       <y>180</y>
       <width>48</width>
       <height>48</height>
@@ -376,7 +376,7 @@ color:rgb(255, 85, 0);
    <widget class="QPushButton" name="button_4">
     <property name="geometry">
      <rect>
-      <x>55</x>
+      <x>205</x>
       <y>180</y>
       <width>48</width>
       <height>48</height>
@@ -406,7 +406,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_9">
     <property name="geometry">
      <rect>
-      <x>155</x>
+      <x>305</x>
       <y>130</y>
       <width>48</width>
       <height>48</height>
@@ -435,7 +435,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_8">
     <property name="geometry">
      <rect>
-      <x>105</x>
+      <x>255</x>
       <y>130</y>
       <width>48</width>
       <height>48</height>
@@ -465,7 +465,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_divide">
     <property name="geometry">
      <rect>
-      <x>205</x>
+      <x>355</x>
       <y>130</y>
       <width>48</width>
       <height>48</height>
@@ -494,7 +494,7 @@ color:rgb(255, 85, 0);
    <widget class="QPushButton" name="button_7">
     <property name="geometry">
      <rect>
-      <x>55</x>
+      <x>205</x>
       <y>130</y>
       <width>48</width>
       <height>48</height>
@@ -524,7 +524,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_percent">
     <property name="geometry">
      <rect>
-      <x>155</x>
+      <x>305</x>
       <y>80</y>
       <width>48</width>
       <height>48</height>
@@ -553,7 +553,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_PlusMinus">
     <property name="geometry">
      <rect>
-      <x>105</x>
+      <x>255</x>
       <y>80</y>
       <width>48</width>
       <height>48</height>
@@ -582,7 +582,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_del">
     <property name="geometry">
      <rect>
-      <x>205</x>
+      <x>355</x>
       <y>80</y>
       <width>48</width>
       <height>48</height>
@@ -611,7 +611,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_clear">
     <property name="geometry">
      <rect>
-      <x>55</x>
+      <x>205</x>
       <y>80</y>
       <width>48</width>
       <height>48</height>
@@ -640,8 +640,8 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_tan">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>180</y>
+      <x>105</x>
+      <y>280</y>
       <width>48</width>
       <height>48</height>
      </rect>
@@ -670,8 +670,8 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_cos">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>230</y>
+      <x>55</x>
+      <y>280</y>
       <width>48</width>
       <height>48</height>
      </rect>
@@ -699,8 +699,8 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QPushButton" name="button_sqr">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>130</y>
+      <x>155</x>
+      <y>280</y>
       <width>48</width>
       <height>48</height>
      </rect>
@@ -754,6 +754,216 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
     </property>
     <property name="text">
      <string>sin</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_sqrt">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>230</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>sqrt</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_pi">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>180</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>pi </string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_e">
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>180</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>e</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_nsqr">
+    <property name="geometry">
+     <rect>
+      <x>155</x>
+      <y>230</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>xª</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_ln">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>230</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>ln</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_log">
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>230</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>log</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_n">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>180</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}</string>
+    </property>
+    <property name="text">
+     <string>n!</string>
     </property>
    </widget>
   </widget>

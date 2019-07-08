@@ -17,7 +17,7 @@ class Calculator : public QMainWindow
 public:
     explicit Calculator(QWidget *parent = nullptr);
     ~Calculator();
-    void input(QString);
+    void buttons();
 
 private:
     Ui::Calculator *ui;
