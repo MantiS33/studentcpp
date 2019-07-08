@@ -966,6 +966,36 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
      <string>n!</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="button_nsqrt">
+    <property name="geometry">
+     <rect>
+      <x>155</x>
+      <y>180</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+background-color:white;
+color:black;
+border: 1px solid grey;
+border-radius: 24px;
+
+}
+
+QPushButton:pressed{
+
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, stop:1 #f6f7fa);
+
+
+}</string>
+    </property>
+    <property name="text">
+     <string>nsqrt</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
