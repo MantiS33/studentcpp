@@ -172,7 +172,7 @@ void Calculator::operations()
         str=QString::number(num,'g',18);
         ui->label->setText(str);
       }
-    else if(button==ui->button_nsqr)
+    /*else if(button==ui->button_nsqr)
       {
         double n;
         num=ui->label->text().toDouble();
@@ -184,10 +184,10 @@ void Calculator::operations()
             str=QString::number(num,'g',15);
             ui->label->setText(str);
           }
-        /*num=pow(num,n);
+        num=pow(num,n);
         str=QString::number(num,'g',15);
-        ui->label->setText(str);*/
-      }
+        ui->label->setText(str);
+      }*/
     else if(button==ui->button_n)
       {
         num=ui->label->text().toDouble();
