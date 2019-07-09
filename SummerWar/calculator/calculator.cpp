@@ -1,7 +1,6 @@
 #include "calculator.h"
 #include "ui_calculator.h"
 
-double num_first;
 
 Calculator::Calculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::Calculator)
 {
@@ -94,11 +93,13 @@ void Calculator::keyPressEvent(QKeyEvent *event)
         ui->button_divide->clicked();
     else if(key==46)
         ui->button_dot->clicked();
+    else if(key==Qt::Key_Backspace)
+      ui->button_del->clicked();
 }
 
 void Calculator::numbers()
 {
-    QPushButton *button=(QPushButton*)sender();
+    QPushButton *button=qobject_cast<QPushButton *>(sender());
     double num;
     QString str;
     if(ui->label->text().contains(".") && button->text()=="0")
@@ -124,7 +125,7 @@ void Calculator::on_button_dot_clicked()
 
 void Calculator::operations()
 {
-    QPushButton *button=(QPushButton*)sender();
+    QPushButton *button=qobject_cast<QPushButton *>(sender());
     double num;
     QString str;
     if(button==ui->button_PlusMinus)
@@ -220,7 +221,7 @@ void Calculator::operations()
 
 void Calculator::math_operations()
 {
-  QPushButton *button=(QPushButton*)sender();
+  QPushButton *button=qobject_cast<QPushButton *>(sender());
   num_first=ui->label->text().toDouble();
   ui->label->setText("0");
   button->setChecked(true);
@@ -345,4 +346,15 @@ double fact(double number)
     return 1;
   else
     return number*fact(number-1);
+}
+
+void Calculator::on_button_del_clicked()
+{
+  QString str=ui->label->text();
+  str.resize(str.size()-1);
+  if(str.length()==0)
+    {
+      str="0";
+    }
+  ui->label->setText(str);
 }

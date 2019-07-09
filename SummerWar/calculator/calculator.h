@@ -21,6 +21,7 @@ public:
 
 private:
     Ui::Calculator *ui;
+    double num_first;
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
 private slots:
@@ -30,6 +31,7 @@ private slots:
     void on_button_clear_clicked();
     void on_button_result_clicked();
     void math_operations();
+    void on_button_del_clicked();
 };
 
 #endif // CALCULATOR_H
