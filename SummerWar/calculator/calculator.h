@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <Qt>
 #include <QtMath>
+#include <QPushButton>
 
 namespace Ui {
 class Calculator;
@@ -22,9 +23,20 @@ public:
 private:
     Ui::Calculator *ui;
     double num_first;
+    double temp_result;
+    double Result;
+    bool waitingForOperand;
+    QPushButton *additiveOperator;
+    QPushButton *multiplicativeOperator;
+    /*QString additiveOperator;
+    QString multiplicativeOperator;*/
+
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
 private slots:
+    void multiplicativeOperatorClicked();
+    void additiveOperatorClicked();
+    bool calculate(double right_operand,QPushButton* button);
     void numbers();
     void on_button_dot_clicked();
     void operations();
