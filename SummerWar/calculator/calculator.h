@@ -19,6 +19,8 @@ public:
     explicit Calculator(QWidget *parent = nullptr);
     ~Calculator();
     void buttons();
+    void error();
+    double nsqrt(double operand,double exp);
 
 private:
     Ui::Calculator *ui;
@@ -36,7 +38,7 @@ protected:
 private slots:
     void multiplicativeOperatorClicked();
     void additiveOperatorClicked();
-    bool calculate(double right_operand,QPushButton* button);
+    bool calculate(double right_operand,const QPushButton* button);
     void numbers();
     void on_button_dot_clicked();
     void operations();

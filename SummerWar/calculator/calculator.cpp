@@ -40,12 +40,12 @@ void Calculator::buttons()
   connect(ui->button_sqr,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_sqrt,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_n,SIGNAL(clicked()),this,SLOT(operations()));
-  connect(ui->button_nsqr,SIGNAL(clicked()),this,SLOT(math_operations()));
+  connect(ui->button_nsqr,SIGNAL(clicked()),this,SLOT(multiplicativeOperatorClicked()));
   connect(ui->button_e,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_ln,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_pi,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_log,SIGNAL(clicked()),this,SLOT(operations()));
-  connect(ui->button_nsqrt,SIGNAL(clicked()),this,SLOT(math_operations()));
+  connect(ui->button_nsqrt,SIGNAL(clicked()),this,SLOT(multiplicativeOperatorClicked()));
   ui->button_nsqr->setCheckable(true);
   ui->button_nsqrt->setCheckable(true);
   ui->button_divide->setCheckable(true);
@@ -62,14 +62,13 @@ Calculator::~Calculator()
 void Calculator::additiveOperatorClicked()
 {
   QPushButton *button=qobject_cast<QPushButton*>(sender());
-  QString action=button->text();
   double num=ui->label->text().toDouble();
 
   if(multiplicativeOperator!=nullptr)
     {
       if(!calculate(num,multiplicativeOperator))
         {
-          on_button_clear_clicked();
+          error();
           return;
         }
       ui->label->setText(QString::number(temp_result,'g',15));
@@ -82,7 +81,7 @@ void Calculator::additiveOperatorClicked()
     {
       if(!calculate(num,additiveOperator))
         {
-          on_button_clear_clicked();
+          error();
           return;
         }
       ui->label->setText(QString::number(Result,'g',15));
@@ -99,51 +98,64 @@ void Calculator::additiveOperatorClicked()
 void Calculator::multiplicativeOperatorClicked()
 {
   QPushButton *button=qobject_cast<QPushButton*>(sender());
-  QString action=button->text();
   double num=ui->label->text().toDouble();
 
   if(multiplicativeOperator!=nullptr)
     {
       if(!calculate(num,multiplicativeOperator))
         {
-          on_button_clear_clicked();
+          error();
           return;
         }
       ui->label->setText(QString::number(temp_result,'g',15));
     }
   else
     {
-      temp_result=num;
+      temp_result = num;
     }
-  multiplicativeOperator=button;
+  multiplicativeOperator = button;
   waitingForOperand = true;
 }
 
 
-bool Calculator::calculate(double right_operand,QPushButton *button)
+bool Calculator::calculate(double right_operand,const QPushButton *button)
 {
-  if(button==ui->button_plus)
+  if(button == ui->button_plus)
     {
-      Result=Result+right_operand;
+      Result = Result + right_operand;
     }
-  else if(button==ui->button_minus)
+  else if(button == ui->button_minus)
     {
-      Result=Result-right_operand;
+      Result = Result - right_operand;
     }
-  else if(button==ui->button_mult)
+  else if(button == ui->button_mult)
     {
-      Result=Result*right_operand;
+      temp_result = temp_result * right_operand;
     }
-  else if(button==ui->button_divide)
+  else if(button == ui->button_divide)
     {
-      if(right_operand==0.0)
+      if(right_operand == 0.0)
         return false;
       else
         {
-          Result=Result/right_operand;
+          temp_result = temp_result / right_operand;
         }
     }
+  else if(button == ui->button_nsqr)
+    {
+      temp_result = pow(temp_result,right_operand);
+    }
+  else if(button == ui->button_nsqrt)
+    {
+      temp_result = nsqrt(temp_result,right_operand);
+    }
   return true;
+}
+
+void Calculator::error()
+{
+  on_button_clear_clicked();
+  ui->label->setText("ERROR");
 }
 
 void Calculator::keyPressEvent(QKeyEvent *event)
@@ -446,7 +458,7 @@ void Calculator::on_button_result_clicked()
    {
      if(!calculate(operand,multiplicativeOperator))
        {
-         on_button_clear_clicked();
+         error();
          return;
        }
      operand=temp_result;
@@ -457,7 +469,7 @@ void Calculator::on_button_result_clicked()
    {
      if(!calculate(operand,additiveOperator))
        {
-         on_button_clear_clicked();
+         error();
          return;
        }
      additiveOperator=nullptr;
@@ -472,6 +484,60 @@ void Calculator::on_button_result_clicked()
   waitingForOperand=true;
 }
 
+void Calculator::on_button_del_clicked()
+{
+  QString str=ui->label->text();
+  str.resize(str.size()-1);
+  if(str.length()==0)
+    {
+      str="0";
+
+    }
+  ui->label->setText(str);
+}
+
+double Calculator::nsqrt(double operand,double exp)
+{
+  if (static_cast<int>(exp) == exp)
+    {
+      if (!(static_cast<int>(exp) & 1))
+        {
+          if (abs(operand) == operand)
+            {
+              operand = pow(operand, 1 / operand);
+            }
+          else
+            {
+              error();
+              return 0.0;
+            }
+        }
+      else
+        {
+          if (abs(operand) == operand)
+            {
+              operand=pow(operand, 1 / exp);
+            }
+          else
+            {
+              operand=pow(abs(operand), 1 / exp) * (-1);
+            }
+        }
+    }
+  else
+    {
+      if (abs(operand) == operand)
+        {
+          operand=pow(operand, 1 / exp);
+        }
+      else
+        {
+          operand=pow(abs(operand), 1 / exp) * (-1);
+        }
+    }
+  return operand;
+}
+
 double fact(double number)
 {
   if(number<0)
@@ -480,15 +546,4 @@ double fact(double number)
     return 1;
   else
     return number*fact(number-1);
-}
-
-void Calculator::on_button_del_clicked()
-{
-  QString str=ui->label->text();
-  str.resize(str.size()-1);
-  if(str.length()==0)
-    {
-      str="0";
-    }
-  ui->label->setText(str);
 }
