@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>544</width>
-    <height>457</height>
+    <width>410</width>
+    <height>405</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1025,11 +1025,17 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>0</x>
       <y>0</y>
-      <width>240</width>
+      <width>410</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+qproperty-alignment: 'AlignVCenter | AlignRight';
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:1 #dadbde, stop:0 #ffffff);
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -1041,7 +1047,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>544</width>
+     <width>410</width>
      <height>20</height>
     </rect>
    </property>

@@ -21,6 +21,7 @@ public:
     void buttons();
     void error();
     double nsqrt(double operand,double exp);
+    bool check(QString label);
 
 private:
     Ui::Calculator *ui;
