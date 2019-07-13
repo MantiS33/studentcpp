@@ -46,12 +46,13 @@ void Calculator::buttons()
   connect(ui->button_pi,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_log,SIGNAL(clicked()),this,SLOT(operations()));
   connect(ui->button_nsqrt,SIGNAL(clicked()),this,SLOT(multiplicativeOperatorClicked()));
-  ui->button_nsqr->setCheckable(true);
-  ui->button_nsqrt->setCheckable(true);
-  ui->button_divide->setCheckable(true);
-  ui->button_mult->setCheckable(true);
-  ui->button_plus->setCheckable(true);
-  ui->button_minus->setCheckable(true);
+  ui->radioButton_Deg->setChecked(true);
+  //ui->button_nsqr->setCheckable(true);
+  //ui->button_nsqrt->setCheckable(true);
+  //ui->button_divide->setCheckable(true);
+  //ui->button_mult->setCheckable(true);
+  //ui->button_plus->setCheckable(true);
+  //ui->button_minus->setCheckable(true);
 }
 
 Calculator::~Calculator()
@@ -213,12 +214,19 @@ void Calculator::numbers()
       }
     if(ui->label->text().contains(".") && button->text()=="0")
     {
-        str=ui->label->text()+button->text();
+        if(ui->label->text().length()<20)
+          {
+            str=ui->label->text()+button->text();
+          }
+        else
+          {
+            str=ui->label->text();
+          }
     }
     else
     {
     num=(ui->label->text()+button->text()).toDouble();
-    str=QString::number(num,'g',15);
+    str=QString::number(num,'g',20);
     }
     ui->label->setText(str);
     //waitingForOperand=false;
@@ -238,95 +246,87 @@ void Calculator::operations()
     QPushButton *button=qobject_cast<QPushButton *>(sender());
     double num;
     QString str;
+    num=ui->label->text().toDouble();
     if(button==ui->button_PlusMinus)
     {
-        num=(ui->label->text()).toDouble();
         num=num*(-1);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
     }
     else if(button==ui->button_percent)
       {
-          num=(ui->label->text()).toDouble();
           num=num*0.01;
-          str=QString::number(num,'g',15);
-          ui->label->setText(str);
       }
-    if(button==ui->button_sin)
+    else if(button==ui->button_sin)
       {
-        num=ui->label->text().toDouble();
-        num=sin(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
+        if(ui->radioButton_Deg->isChecked())
+          {
+            num=sin(num*3.14159265359 / 180.0);
+          }
+        else
+          {
+            num=sin(num);
+          }
       }
     else if(button==ui->button_cos)
       {
-        num=ui->label->text().toDouble();
-        num=cos(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
+        if(ui->radioButton_Deg->isChecked())
+          {
+            num=cos(num*3.14159265359 / 180);
+          }
+        else
+          {
+            num=cos(num);
+          }
       }
     else if(button==ui->button_tan)
       {
-        num=ui->label->text().toDouble();
-        num=tan(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
+        if(ui->radioButton_Deg->isChecked())
+          {
+            num=tan(num*3.14159265359 / 180.0);
+          }
+        else
+          {
+            num=tan(num);
+          }
       }
     else if(button==ui->button_sqr)
       {
-        num=ui->label->text().toDouble();
         num=num*num;
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
       }
     else if(button==ui->button_pi)
       {
         num=3.1415926535897932;
-        str=QString::number(num,'g',18);
-        ui->label->setText(str);
       }
     else if(button==ui->button_n)
       {
-        num=ui->label->text().toDouble();
         num=fact(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
       }
     else if(button==ui->button_sqrt)
       {
-        num=ui->label->text().toDouble();
         if(num>=0)
           {
             num=sqrt(num);
-            str=QString::number(num,'g',15);
-            ui->label->setText(str);
           }
         else
           {
-            ui->label->setText("ERROR");
+            error();
+            return;
           }
       }
     else if(button==ui->button_e)
       {
         num=2.7182818284590;
-        str=QString::number(num,'g',18);
-        ui->label->setText(str);
       }
     else if(button==ui->button_ln)
       {
-        num=ui->label->text().toDouble();
         num=log(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
       }
     else if(button==ui->button_log)
       {
-        num=ui->label->text().toDouble();
         num=log10(num);
-        str=QString::number(num,'g',15);
-        ui->label->setText(str);
       }
+    waitingForOperand=false;
+    str=QString::number(num,'g',20);
+    ui->label->setText(str);
 }
 
 void Calculator::math_operations()
@@ -547,3 +547,4 @@ double fact(double number)
   else
     return number*fact(number-1);
 }
+

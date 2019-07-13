@@ -30,8 +30,6 @@ private:
     bool waitingForOperand;
     QPushButton *additiveOperator;
     QPushButton *multiplicativeOperator;
-    /*QString additiveOperator;
-    QString multiplicativeOperator;*/
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
