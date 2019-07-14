@@ -43,6 +43,9 @@ qproperty-alignment: 'AlignVCenter | AlignRight';
     <property name="text">
      <string>0</string>
     </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
    </widget>
    <widget class="QPushButton" name="button_0">
     <property name="geometry">
@@ -783,7 +786,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
 </string>
     </property>
     <property name="text">
-     <string>sqrt</string>
+     <string>√</string>
     </property>
    </widget>
    <widget class="QPushButton" name="button_pi">
@@ -993,15 +996,15 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
 }</string>
     </property>
     <property name="text">
-     <string>nsqrt</string>
+     <string>ª√</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_Rad">
     <property name="geometry">
      <rect>
-      <x>5</x>
+      <x>15</x>
       <y>150</y>
-      <width>84</width>
+      <width>45</width>
       <height>19</height>
      </rect>
     </property>
@@ -1014,7 +1017,7 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
      <rect>
       <x>95</x>
       <y>150</y>
-      <width>84</width>
+      <width>55</width>
       <height>19</height>
      </rect>
     </property>
@@ -1034,11 +1037,15 @@ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:0 #dadbde, st
     <property name="styleSheet">
      <string notr="true">QLabel {
 qproperty-alignment: 'AlignVCenter | AlignRight';
+border-bottom: 1px  solid grey;
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y1: 1, stop:1 #dadbde, stop:0 #ffffff);
 }</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="margin">
+     <number>10</number>
     </property>
    </widget>
   </widget>

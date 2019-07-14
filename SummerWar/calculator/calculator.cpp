@@ -122,7 +122,7 @@ void Calculator::multiplicativeOperatorClicked()
           error();
           return;
         }
-      ui->label->setText(QString::number(temp_result,'g',15));
+      ui->label->setText(QString::number(temp_result,'g',20));
     }
   else
     {
@@ -313,7 +313,7 @@ void Calculator::operations()
         temp = QString::number(num);
         if(ui->radioButton_Deg->isChecked())
           {
-            num = tan(num * 3.14159265359 / 180.0);
+            num = tan(num * 3.1415926535897932 / 180.0);
           }
         else
           {
@@ -441,7 +441,7 @@ void Calculator::on_button_result_clicked()
    {
      Result = operand;
    }
-  ui->label->setText(QString::number(Result,'g',15));
+  ui->label->setText(QString::number(Result,'g',20));
   str = str + temp;
   ui->label_2->setText(str);
   Result = 0.0;
