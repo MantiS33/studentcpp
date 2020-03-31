@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace testing_of_Csharp
 {
@@ -12,6 +14,7 @@ namespace testing_of_Csharp
     [XmlInclude(typeof(Rectangle))]
     [XmlInclude(typeof(Circle))]
     [XmlInclude(typeof(Ellipsis))]
+    
     public abstract class Figure
     {
         public string Figure_Type { get; set; }
@@ -432,10 +435,19 @@ namespace testing_of_Csharp
                     case "5":
                         {
                             Console.Clear();
-                            var serializer = new XmlSerializer(typeof(List<Figure>));
+                            XmlSerializer serializer = new XmlSerializer(typeof(List<Figure>));
                             TextWriter writer = new StringWriter();
                             serializer.Serialize(writer, editor.Figures);
                             Console.WriteLine(writer.ToString());
+                            using (FileStream fs = new FileStream("testing.xml", FileMode.OpenOrCreate))
+                            {
+                                serializer.Serialize(fs, editor.Figures);
+                            }
+                            string jsonString;
+                            jsonString = JsonSerializer.Serialize(editor.Figures);
+                            File.WriteAllText("testinJson.json", JsonSerializer.Serialize(editor.Figures));
+                            Console.WriteLine();
+                            Console.WriteLine(jsonString);
                             break;
                         }
                     case "0":

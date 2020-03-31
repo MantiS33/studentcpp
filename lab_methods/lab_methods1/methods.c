@@ -82,8 +82,45 @@ int simple_iterations(double **a, double *b, double e , int n, double *x)
 
 int main(void)
 {
-	int n, i, j;
-	double **a; *b, *x;
-
-
+	int n, i;
+	double **a, *b, *x;
+	n = 4;
+	a = (double**)malloc(n * sizeof(double*));
+	for (i = 0; i < n; i++)
+	{
+		a[i] = (double*)malloc(n * sizeof(double));
+	}
+	b = (double*)malloc(n * sizeof(double));
+	x = (double*)malloc(n * sizeof(double));
+	a[0][0] = 6.0; a[0][1] = 3.0; a[0][2] = -1.5; a[0][3] = 1.0;
+	a[1][0] = -2.0; a[1][1] = -8.0; a[1][2] = 3.0; a[1][3] = -2.5;
+	a[2][0] = 1.5; a[2][1] = -2.0; a[2][2] = -8.0; a[2][3] = 2.5;
+	a[3][0] = -3.0; a[3][1] = -3.0; a[3][2] = 1.5; a[3][3] = 9.5;
+	
+	b[0] = 11.5; b[1] = -19.0; b[2] = -16.5; b[3] = 33.5;
+	if (simple_iterations(a,b,2.72,n,x) == 0)
+	{
+		printf("%s", "Solution doesn't find.\n");
+		free(x);
+		free(b);
+		for (i = 0; i < n; i++)
+		{
+			free(a[i]);
+		}
+		free(a);
+		return 0;
+	}
+	for (i = 0; i < n; i++)
+	{
+		printf("%f", x[i]);
+		printf("%s", "\n");
+	}
+	free(x);
+	free(b);
+	for (i = 0; i < n; i++)
+	{
+		free(a[i]);
+	}
+	free(a);
+	return 0;
 }
