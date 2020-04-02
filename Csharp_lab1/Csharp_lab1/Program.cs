@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace testing_of_Csharp
 {
@@ -89,7 +86,7 @@ namespace testing_of_Csharp
                     Console.WriteLine();
                 }
             }
-            return 25;
+            return Console.WindowHeight;
         }
     }
 
@@ -154,7 +151,7 @@ namespace testing_of_Csharp
                     Console.WriteLine();
                 }
             }
-            return 25;
+            return Console.WindowHeight;
         }
     }
 
@@ -224,7 +221,7 @@ namespace testing_of_Csharp
                 Console.Write('*');
             }
             Console.SetCursorPosition(0, 25 + currentPos);
-            return 25;
+            return Console.WindowHeight;
         }
     }
 
@@ -297,7 +294,7 @@ namespace testing_of_Csharp
                 Console.Write('*');
             }
             Console.SetCursorPosition(0, 25 + currentPos);
-            return 25;
+            return Console.WindowHeight;
         }
     }
 
@@ -317,20 +314,31 @@ namespace testing_of_Csharp
         }
 
     }
+    
 
     class Program
     {
+        static public string ReplaceDotOnComma(string str)
+        {
+            if(str.Contains("."))
+            {
+                str = str.Replace(".", ",");
+                return str;
+            }
+            return str;
+        }
 
         static void Main(string[] args)
         {
-            Graphics_editor editor = new Graphics_editor();
-
-            editor.Figures.Add(new Square(10,2));
+            Graphics_editor editor = new Graphics_editor
+            {
+                AvgArea = 0.0
+            };
+            /*editor.Figures.Add(new Square(10,2));
             editor.Figures.Add(new Circle(5,6));
             editor.Figures.Add(new Rectangle(10,2,6));
             editor.Figures.Add(new Rectangle(12, 12, 0));
-            editor.Figures.Add(new Ellipsis(20, 6, 4));
-            
+            editor.Figures.Add(new Ellipsis(20, 6, 4));*/
             Console.WriteLine("Choose the function:");
             string choice = Console.ReadLine();
             while(true)
@@ -397,6 +405,7 @@ namespace testing_of_Csharp
                             {
                                 Console.WriteLine(aFigure);
                             }
+                            Console.WriteLine($"Average area: {editor.AvgArea}");
                             break;
                         }
                     case "3":
@@ -409,29 +418,6 @@ namespace testing_of_Csharp
                             break;
                         }
                     case "4":
-                        {
-                            Console.Clear();
-                            int currentPos = 0;
-                            if(editor.Figures.Count<=1)
-                            {
-                                if(editor.Figures.Count==0)
-                                {
-                                    break;
-                                }
-                                for(int i=0;i<editor.Figures.Count;i++)
-                                {
-                                    currentPos = editor.Figures[i].Draw(currentPos);
-                                }
-                                break;
-                            }
-                            for (int i = editor.Figures.Count - 1; i >= editor.Figures.Count - 2; i--)
-                            {
-
-                                currentPos = editor.Figures[i].Draw(currentPos);
-
-                            }
-                            break;
-                        }
                     case "5":
                         {
                             Console.Clear();
@@ -448,6 +434,144 @@ namespace testing_of_Csharp
                             File.WriteAllText("testinJson.json", JsonSerializer.Serialize(editor.Figures));
                             Console.WriteLine();
                             Console.WriteLine(jsonString);
+                            break;
+                        }
+                    case "6":
+                        {
+                            
+                            uint tempFrame=0;
+                            double temp1=0.0, temp2=0.0;
+                            XmlDocument xDoc = new XmlDocument();
+                            xDoc.Load("testing.xml");
+                            XmlElement xRoot = xDoc.DocumentElement;
+                            foreach(XmlNode xnode in xRoot)
+                            {
+                                if(xnode.Attributes.Count>0)
+                                {
+                                    XmlNode attr = xnode.Attributes.GetNamedItem("xsi:type");
+                                    if(attr!= null)
+                                    {
+                                        switch(attr.Value)
+                                        {
+                                            case "Square":
+                                                {
+                                                    foreach (XmlNode childnode in xnode.ChildNodes)
+                                                    {
+                                                        switch(childnode.Name)
+                                                        {
+                                                            case "Area":
+                                                                {
+                                                                    editor.AvgArea += Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "A":
+                                                                {
+                                                                    temp1 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Frame_thickness":
+                                                                {
+                                                                    tempFrame = Convert.ToUInt32(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+
+                                                                }
+                                                        }
+                                                    }
+                                                    editor.Figures.Add(new Square(temp1, tempFrame));
+                                                    break;
+                                                }
+                                            case "Rectangle":
+                                                {
+                                                    foreach (XmlNode childnode in xnode.ChildNodes)
+                                                    {
+                                                        switch(childnode.Name)
+                                                        {
+                                                            case "Area":
+                                                                {
+                                                                    editor.AvgArea += Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Frame_thickness":
+                                                                {
+                                                                    tempFrame = Convert.ToUInt32(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "A":
+                                                                {
+                                                                    temp1 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "B":
+                                                                {
+                                                                    temp2 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                        }
+                                                    }
+                                                    editor.Figures.Add(new Rectangle(temp1, temp2, tempFrame));
+                                                    break;
+                                                }
+                                            case "Ellipsis":
+                                                {
+                                                    foreach(XmlNode childnode in xnode.ChildNodes)
+                                                    {
+                                                        switch(childnode.Name)
+                                                        {
+                                                            case "Area":
+                                                                {
+                                                                    editor.AvgArea += Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Frame_thickness":
+                                                                {
+                                                                    tempFrame = Convert.ToUInt32(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Major_Radius":
+                                                                {
+                                                                    temp1 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Minor_Radius":
+                                                                {
+                                                                    temp2 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                        }
+                                                    }
+                                                    editor.Figures.Add(new Ellipsis(temp1, temp2, tempFrame));
+                                                    break;
+                                                }
+                                            case "Circle":
+                                                {
+                                                    foreach(XmlNode childnode in xnode.ChildNodes)
+                                                    {
+                                                        switch(childnode.Name)
+                                                        {
+                                                            case "Area":
+                                                                {
+                                                                    editor.AvgArea += Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Frame_thickness":
+                                                                {
+                                                                    tempFrame = Convert.ToUInt32(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                            case "Radius":
+                                                                {
+                                                                    temp1 = Convert.ToDouble(ReplaceDotOnComma(childnode.InnerText));
+                                                                    break;
+                                                                }
+                                                        }
+                                                    }
+                                                    editor.Figures.Add(new Circle(temp1, tempFrame));
+                                                    break;
+                                                }
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         }
                     case "0":
