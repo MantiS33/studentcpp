@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace testing_of_Csharp
 {
@@ -331,11 +331,7 @@ namespace testing_of_Csharp
             {
                 AvgArea = 0.0
             };
-            /*editor.Figures.Add(new Square(10,2));
-            editor.Figures.Add(new Circle(5,6));
-            editor.Figures.Add(new Rectangle(10,2,6));
-            editor.Figures.Add(new Rectangle(12, 12, 0));
-            editor.Figures.Add(new Ellipsis(20, 6, 4));*/
+            
             MENU();
             Console.Write('>');
             string choice = Console.ReadLine();
@@ -417,6 +413,7 @@ namespace testing_of_Csharp
                                                     while (!NameOfFile.Contains(".xml"))
                                                     {
                                                         Console.WriteLine("error");
+                                                        Console.Write("input name of xml file: ");
                                                         NameOfFile = Console.ReadLine();
                                                     }
                                                     uint tempFrame = 0;
@@ -563,12 +560,73 @@ namespace testing_of_Csharp
                                                 }
                                             case "2":
                                                 {
-                                                    throw new NotImplementedException("not done :(");
+                                                    Console.Write("input name of json file: ");
+                                                    string NameOfFile = Console.ReadLine();
+                                                    while (!NameOfFile.Contains(".json"))
+                                                    {
+                                                        Console.WriteLine("error");
+                                                        Console.Write("input name of json file: ");
+                                                        NameOfFile = Console.ReadLine();
+                                                    }
+                                                    int indexStart = 0, indexEnd=0;
+                                                    JObject elem;
+                                                    try
+                                                    {
+                                                        string subjson, json = File.ReadAllText(NameOfFile);
+                                                        json = json.Trim(new char[] { '[', ']' });
+                                                        do
+                                                        {
+                                                            for (int i = indexStart; i < json.Length; i++)
+                                                            {
+                                                                if (json[i] == '}')
+                                                                {
+                                                                    indexEnd = i;
+                                                                    break;
+                                                                }
+                                                            }
+                                                            subjson = json.Substring(indexStart, (indexEnd - indexStart) + 1);
+                                                            elem = JObject.Parse(subjson);
+                                                            switch ((string)elem["Figure_Type"])
+                                                            {
+                                                                case "rectangle":
+                                                                    {
+                                                                        editor.Figures.Add(new Rectangle((double)elem["A"], (double)elem["B"], (uint)elem["Frame_thickness"]));
+                                                                        editor.AvgArea += (double)elem["Area"];
+                                                                        break;
+                                                                    }
+                                                                case "square":
+                                                                    {
+                                                                        editor.Figures.Add(new Square((double)elem["A"], (uint)elem["Frame_thickness"]));
+                                                                        editor.AvgArea += (double)elem["Area"];
+                                                                        break;
+                                                                    }
+                                                                case "circle":
+                                                                    {
+                                                                        editor.Figures.Add(new Circle((double)elem["Radius"], (uint)elem["Frame_thickness"]));
+                                                                        editor.AvgArea += (double)elem["Area"];
+                                                                        break;
+                                                                    }
+                                                                case "ellipsis":
+                                                                    {
+                                                                        editor.Figures.Add(new Ellipsis((double)elem["Major_Radius"], (double)elem["Minor_Radius"], (uint)elem["Frame_thickness"]));
+                                                                        editor.AvgArea += (double)elem["Area"];
+                                                                        break;
+                                                                    }
+                                                            }
+                                                            indexStart = indexEnd + 2;
+                                                            elem = null;
+                                                        }
+                                                        while (indexStart <= json.Length);
+                                                    }
+                                                    catch
+                                                    {
+                                                        Console.WriteLine("file is empty");
+                                                    }
+                                                    break;
                                                 }
                                         }
                                         break;
                                     }
-
                             }
                             break;
                         }
@@ -632,22 +690,34 @@ namespace testing_of_Csharp
                                         while (!NameOfFile.Contains(".xml"))
                                         {
                                             Console.WriteLine("error");
+                                            Console.Write("input name of xml file: ");
                                             NameOfFile = Console.ReadLine();
                                         }
                                         XmlSerializer serializer = new XmlSerializer(typeof(List<Figure>));
-                                        TextWriter writer = new StringWriter();
-                                        serializer.Serialize(writer, editor.Figures);
-                                        Console.WriteLine(writer.ToString());
                                         using (FileStream fs = new FileStream(NameOfFile, FileMode.OpenOrCreate))
                                         {
                                             serializer.Serialize(fs, editor.Figures);
                                         }
+                                        Console.WriteLine("serialized");
                                         break;
                                     }
                                 case "2":
                                     {
-                                        File.WriteAllText("testinJson.json", System.Text.Json.JsonSerializer.Serialize(editor.Figures));
-                                        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(editor.Figures));
+                                        Console.Write("input name of json file: ");
+                                        NameOfFile = Console.ReadLine();
+                                        while(!NameOfFile.Contains(".json"))
+                                        {
+                                            Console.WriteLine("error");
+                                            Console.Write("input name of json file: ");
+                                            NameOfFile = Console.ReadLine();
+                                        }
+                                        Newtonsoft.Json.JsonSerializer serializer = new Newtonsoft.Json.JsonSerializer();
+                                        using (StreamWriter sw = new StreamWriter(NameOfFile))
+                                        using (JsonWriter writer = new JsonTextWriter(sw))
+                                        {
+                                            serializer.Serialize(writer, editor.Figures);
+                                        }
+                                        Console.WriteLine("serialized");
                                         break;
                                     }
                             }
@@ -668,7 +738,6 @@ namespace testing_of_Csharp
                 choice = Console.ReadLine();
             }
             
-            //Console.ReadKey();
         }
     }
 }
