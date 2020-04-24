@@ -81,6 +81,7 @@ int main(void)
 		free(x);
 		free(y);
 		free(c);
+		fclose(sFileX);
 		getchar();
 		return 0;
 	}
@@ -90,6 +91,8 @@ int main(void)
 		free(x);
 		free(y);
 		free(c);
+		fclose(sFileY);
+		fclose(sFileX);
 		getchar();
 		return 0;
 	}
