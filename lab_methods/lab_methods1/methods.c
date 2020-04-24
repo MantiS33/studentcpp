@@ -83,11 +83,12 @@ int slau(double **a, double *b, double e , int n, double *x)
 int main(void)
 {
 	FILE *inFileA,*inFileB, *outFile;
-	int n, i,j;
-	double **a, *b, *x;
+	int n, i, j;
+	double **a, *b, *x, e;
 	printf("%s", "enter system order: ");
 	scanf("%d", &n);
-
+	printf("e = ");
+	scanf("%lf", &e);
 	a = (double**)malloc(n * sizeof(double*));
 	for (i = 0; i < n; i++)
 	{
@@ -133,7 +134,7 @@ int main(void)
 	}
 
 	
-	if (slau(a,b,2.72,n,x) == 0)
+	if (slau(a,b,e,n,x) == 0)
 	{
 		printf("%s", "Solution doesn't find.\n");
 		free(x);
