@@ -87,7 +87,7 @@ void newtonPolynomial(int n, double* c, double* x)
 int main(void)
 {
 	int n, i;
-	double* x, *y, *c;
+	double *x, *y, *c;
 	FILE *sFileX, *sFileY;
 
 	n = 11;
@@ -97,13 +97,19 @@ int main(void)
 
 	if ((sFileX = fopen("x.txt", "r")) == NULL)
 	{
-		printf("can't open the file");
+		printf("%s","can't open the file\n");
+		free(x);
+		free(y);
+		free(c);
 		getchar();
 		return 0;
 	}
 	if ((sFileY = fopen("y.txt", "r")) == NULL)
 	{
-		printf("can't open the file");
+		printf("%s","can't open the file\n");
+		free(x);
+		free(y);
+		free(c);
 		getchar();
 		return 0;
 	}
