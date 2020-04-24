@@ -6,7 +6,7 @@
 int newton(int n, double* x, double* y, double* c)
 {
 	int i, j, k;
-	double temp1 = 0.0, temp2 = 0.0;
+	double temp1 = 0.0, temp2 = 1.0;
 	for (i = 0; i < n; i++)
 	{
 		for (j = i + 1; j < n; j++)
@@ -22,39 +22,25 @@ int newton(int n, double* x, double* y, double* c)
 		{
 			for (k = 0; k <= j - 1; k++)
 			{
-				if (temp2 == 0.0 && k == 0)
-				{
-					temp2 = x[i] - x[k];
-				}
-				else
-				{
-					temp2 = temp2 * (x[i] - x[k]);
-				}
+				temp2 = temp2 * (x[i] - x[k]);
 			}
 			temp1 = temp1 + c[j] * temp2;
-			temp2 = 0.0;
+			temp2 = 1.0;
 		}
 		for (k = 0; k <= i - 1; k++)
 		{
-			if (temp2 == 0.0 && k == 0)
-			{
-				temp2 = x[i] - x[k];
-			}
-			else
-			{
-				temp2 = temp2 * (x[i] - x[k]);
-			}
+			temp2 = temp2 * (x[i] - x[k]);
 		}
 		c[i] = (y[i] - c[0] - temp1) / temp2;
 		temp1 = 0.0;
-		temp2 = 0.0;
+		temp2 = 1.0;
 	}
 	return 1;
 }
 
 void newtonPolynomial(int n, double* c, double* x)
 {
-	double temp1 = 0.0, temp2 = 0.0, X;
+	double temp1 = 0.0, temp2 = 1.0, X;
 	int i, j;
 	FILE* fp;
 	fp = fopen("result.txt", "w");
@@ -66,17 +52,11 @@ void newtonPolynomial(int n, double* c, double* x)
 		{
 			for (j = 0; j <= i - 1; j++)
 			{
-				if (temp2 == 0.0 && j == 0)
-				{
-					temp2 = X - x[j];
-				}
-				else
-				{
-					temp2 = temp2 * (X - x[j]);
-				}
+				
+				temp2 = temp2 * (X - x[j]);
 			}
 			temp1 = temp1 + c[i] * temp2;
-			temp2 = 0.0;
+			temp2 = 1.0;
 		}
 		fprintf(fp, "y(%f)=%f\n", X, temp1);
 		temp1 = c[0];
