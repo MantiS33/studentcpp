@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <math.h>
 
-int simple_iterations(double **a, double *b, double e , int n, double *x)
+int slau(double **a, double *b, double e , int n, double *x)
 {
 	double **A, *B, *Xpr, temp;
 	int i, j;
@@ -82,9 +82,12 @@ int simple_iterations(double **a, double *b, double e , int n, double *x)
 
 int main(void)
 {
-	int n, i;
+	FILE *inFileA,*inFileB, *outFile;
+	int n, i,j;
 	double **a, *b, *x;
-	n = 4;
+	printf("%s", "enter system order: ");
+	scanf("%d", &n);
+
 	a = (double**)malloc(n * sizeof(double*));
 	for (i = 0; i < n; i++)
 	{
@@ -92,13 +95,45 @@ int main(void)
 	}
 	b = (double*)malloc(n * sizeof(double));
 	x = (double*)malloc(n * sizeof(double));
-	a[0][0] = 6.0; a[0][1] = 3.0; a[0][2] = -1.5; a[0][3] = 1.0;
-	a[1][0] = -2.0; a[1][1] = -8.0; a[1][2] = 3.0; a[1][3] = -2.5;
-	a[2][0] = 1.5; a[2][1] = -2.0; a[2][2] = -8.0; a[2][3] = 2.5;
-	a[3][0] = -3.0; a[3][1] = -3.0; a[3][2] = 1.5; a[3][3] = 9.5;
 	
-	b[0] = 11.5; b[1] = -19.0; b[2] = -16.5; b[3] = 33.5;
-	if (simple_iterations(a,b,2.72,n,x) == 0)
+	if ((inFileA = fopen("a.txt", "r")) == NULL)
+	{
+		printf("%s", "can't open the file");
+		free(b);
+		free(x); for (i = 0; i < n; i++)
+		{
+			free(a[i]);
+		}
+		fclose(inFileA);
+		free(a);
+		return 0;
+	}
+	if ((inFileB = fopen("b.txt", "r")) == NULL)
+	{
+		printf("%s", "can't open the file");
+		free(b);
+		free(x); for (i = 0; i < n; i++)
+		{
+			free(a[i]);
+		}
+		free(a);
+		fclose(inFileA);
+		fclose(inFileB);
+		return 0;
+	}
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < n; j++)
+		{
+			fscanf(inFileA, "%lf", &a[i][j]);
+			printf("%8.2fx%i", a[i][j], j + 1);
+		}
+		fscanf(inFileB, "%lf", &b[i]);
+		printf("%8.2f\n", b[i]);
+	}
+
+	
+	if (slau(a,b,2.72,n,x) == 0)
 	{
 		printf("%s", "Solution doesn't find.\n");
 		free(x);
@@ -108,13 +143,18 @@ int main(void)
 			free(a[i]);
 		}
 		free(a);
+		fclose(inFileA);
+		fclose(inFileB);
 		return 0;
 	}
+	printf("\n");
+	outFile = fopen("x.txt", "w");
 	for (i = 0; i < n; i++)
 	{
-		printf("%f", x[i]);
-		printf("%s", "\n");
+		printf("x%i=%lf\n", i + 1, x[i]);
+		fprintf(outFile, "%lf\n", x[i]);
 	}
+
 	free(x);
 	free(b);
 	for (i = 0; i < n; i++)
@@ -122,5 +162,8 @@ int main(void)
 		free(a[i]);
 	}
 	free(a);
+	fclose(inFileA);
+	fclose(inFileB);
+	fclose(outFile);
 	return 0;
 }
