@@ -70,7 +70,7 @@ int main(void)
 	double *x, *y, *c;
 	FILE *sFileX, *sFileY;
 
-	n = 11;
+	scanf("%d", &n);
 	x = (double*)malloc(n * sizeof(double));
 	y = (double*)malloc(n * sizeof(double));
 	c = (double*)malloc(n * sizeof(double));
