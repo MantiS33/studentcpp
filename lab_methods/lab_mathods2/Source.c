@@ -5,8 +5,7 @@
 
 int newton(int n, double* x, double* y, double* c)
 {
-	int i, j, k;
-	double temp1 = 0.0, temp2 = 1.0;
+	int i, j,factorial=1;
 	for (i = 0; i < n; i++)
 	{
 		for (j = i + 1; j < n; j++)
@@ -15,26 +14,35 @@ int newton(int n, double* x, double* y, double* c)
 				return 0;
 		}
 	}
+	double **deltaY, h;
+	deltaY = (double**)malloc(n * sizeof(double*));
+	for (i = 0; i < n; i++)
+	{
+		deltaY[i] = (double*)malloc(n * sizeof(double));
+	}
+	for (i = 0; i < n; i++)
+	{
+		deltaY[i][0] = y[i];
+	}
+	for (j = 1; j < n; j++)
+	{
+		for (i = 0; i < n - j; i++)
+		{
+			deltaY[i][j] = deltaY[i + 1][j - 1] - deltaY[i][j - 1];
+		}
+	}
+	h = x[1] - x[0];
 	c[0] = y[0];
 	for (i = 1; i < n; i++)
 	{
-		for (j = 1; j <= i - 1; j++)
-		{
-			for (k = 0; k <= j - 1; k++)
-			{
-				temp2 = temp2 * (x[i] - x[k]);
-			}
-			temp1 = temp1 + c[j] * temp2;
-			temp2 = 1.0;
-		}
-		for (k = 0; k <= i - 1; k++)
-		{
-			temp2 = temp2 * (x[i] - x[k]);
-		}
-		c[i] = (y[i] - c[0] - temp1) / temp2;
-		temp1 = 0.0;
-		temp2 = 1.0;
+		factorial  *= i;
+		c[i] = deltaY[0][i] / (factorial*pow(h, i));
 	}
+	for (i = 0; i < n; i++)
+	{
+		free(deltaY[i]);
+	}
+	free(deltaY);
 	return 1;
 }
 
